@@ -31,15 +31,25 @@ export function homeTemplate(onInput, onClickMinimize, onClickClose, onClickSave
           <span>Insert</span><span>Format</span><span>Tools</span><span>Table</span>
           <span>Window</span><span onclick="${onClickHelp}">Help</span>
         </div>
-        <div class="paper" contenteditable="true" spellcheck="false"
-          data-placeholder="Start typing..." oninput="${onInput}"></div>
+        <div
+          class="paper"
+          contenteditable="true"
+          spellcheck="false"
+          data-placeholder="Start typing..."
+          oninput="${onInput}"
+        ></div>
       </div>
     </div>
 
     <div class="crash-modal" hidden>
       <div class="crash-box">
-        <p>WINWORD.EXE has performed an illegal operation because your writing was too bleak and will be shut down.</p>
-        <button onclick="${(h) => h.querySelector('.crash-modal').setAttribute('hidden', '')}">OK</button>
+        <p>
+          WINWORD.EXE has performed an illegal operation because your writing was too bleak and will
+          be shut down.
+        </p>
+        <button onclick="${(h) => h.querySelector('.crash-modal').setAttribute('hidden', '')}">
+          OK
+        </button>
       </div>
     </div>
 
