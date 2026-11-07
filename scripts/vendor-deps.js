@@ -14,7 +14,10 @@ const ROOT = dirname(dirname(fileURLToPath(import.meta.url)));
 const VENDOR_DIR = resolve(ROOT, 'src/vendor');
 
 /** @type {{ name: string, src: string }[]} */
-const DEPS = [{ name: 'hybrids', src: 'node_modules/hybrids/src' }];
+const DEPS = [
+  { name: 'hybrids', src: 'node_modules/hybrids/src' },
+  { name: 'clippyjs', src: 'node_modules/clippyjs/dist' },
+];
 
 mkdirSync(VENDOR_DIR, { recursive: true });
 

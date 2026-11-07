@@ -7,7 +7,8 @@
 export function startClock(id) {
   const tick = () => {
     const el = document.getElementById(id);
-    if (el) el.textContent = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+    if (el)
+      el.textContent = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
   };
   tick();
   const t = setInterval(tick, 10000);

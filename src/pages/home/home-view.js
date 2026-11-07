@@ -8,7 +8,13 @@ import { loadBrain, classifyText } from '#utils/classify.js';
 import { getAgent, initClippy, clippySpeak } from '#utils/clippy-agent.js';
 import { startClock } from '#utils/clock.js';
 import { homeTemplate } from './home-template.js';
-import { EARLY_LINES, PASTE_LINES, DELETE_ALL_LINES, DELETE_MOST_LINES, LONG_DOC_LINES } from './clippy-lines.js';
+import {
+  EARLY_LINES,
+  PASTE_LINES,
+  DELETE_ALL_LINES,
+  DELETE_MOST_LINES,
+  LONG_DOC_LINES,
+} from './clippy-lines.js';
 
 const TYPING_DEBOUNCE = 900;
 const CLASSIFY_AT = 50;
@@ -43,7 +49,8 @@ function showCategory(host, categoryId, force = false) {
   const cat = host.categories.find((c) => c.id === categoryId);
   if (!cat || !a) return;
   const textLen = host.querySelector?.('.paper')?.innerText?.length ?? 0;
-  if (!force && categoryId === lastCategory && Math.abs(textLen - lastCategoryAt) < REFIRE_DELTA) return;
+  if (!force && categoryId === lastCategory && Math.abs(textLen - lastCategoryAt) < REFIRE_DELTA)
+    return;
   lastCategory = categoryId;
   lastCategoryAt = textLen;
   clippySpeak(cat.clippy_line);

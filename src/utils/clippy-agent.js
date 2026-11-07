@@ -13,8 +13,8 @@ export async function initClippy() {
   if (window.__clippyLoading) return;
   window.__clippyLoading = true;
   const [{ initAgent }, { default: Clippy }] = await Promise.all([
-    import('https://unpkg.com/clippyjs@0.1.0/dist/index.mjs'),
-    import('https://unpkg.com/clippyjs@0.1.0/dist/agents/clippy/index.mjs'),
+    import('clippyjs'),
+    import('clippyjs/agents/clippy'),
   ]);
   const a = await initAgent(Clippy);
   document.body.appendChild(a._el);
@@ -33,13 +33,13 @@ export async function initClippy() {
 }
 
 /**
- * Speak with bubble held open long enough to read (~60ms per char, min 3s).
+ * Speak a line — clears any queued/active speech first so we never block.
+ * Balloon auto-hides after clippyjs CLOSE_BALLOON_DELAY (2s post-last-word).
  * @param {string} text
  */
 export function clippySpeak(text) {
   const a = getAgent();
   if (!a) return;
-  const ms = Math.max(3000, text.length * 60);
-  a.speak(text, true);
-  setTimeout(() => a._balloon.hide(), ms);
+  a.stop();
+  a.speak(text, false);
 }
