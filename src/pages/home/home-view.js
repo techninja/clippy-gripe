@@ -3,9 +3,10 @@
  * @module pages/home
  */
 
-import { html, define } from 'hybrids';
+import { define } from 'hybrids';
 import { loadBrain, classifyText } from '#utils/classify.js';
 import { getAgent, initClippy, clippySpeak } from '#utils/clippy-agent.js';
+import { homeTemplate } from './home-template.js';
 
 const TYPING_THRESHOLD = 50;
 const TYPING_DEBOUNCE = 900;
@@ -112,58 +113,7 @@ export default define({
     },
   },
   render: {
-    value: () => html`
-      <div class="word-workspace">
-        <div class="word-window">
-          <div class="word-titlebar">
-            <div class="word-titlebar-icon"></div>
-            <span class="word-titlebar-title">Document1 - Microsoft Word</span>
-            <div class="word-titlebar-buttons">
-              <div class="word-titlebar-btn" onclick="${onClickMinimize}">_</div>
-              <div class="word-titlebar-btn">□</div>
-              <div class="word-titlebar-btn" onclick="${onClickClose}">✕</div>
-            </div>
-          </div>
-          <div class="word-menubar">
-            <span onclick="${onClickSave}">File</span><span>Edit</span><span>View</span>
-            <span>Insert</span><span>Format</span><span>Tools</span><span>Table</span>
-            <span>Window</span><span onclick="${onClickHelp}">Help</span>
-          </div>
-          <div
-            class="paper"
-            contenteditable="true"
-            spellcheck="false"
-            data-placeholder="Start typing..."
-            oninput="${onInput}"
-          ></div>
-        </div>
-      </div>
-
-      <div class="crash-modal" hidden>
-        <div class="crash-box">
-          <p>
-            WINWORD.EXE has performed an illegal operation because your writing was too bleak and
-            will be shut down.
-          </p>
-          <button onclick="${(h) => h.querySelector('.crash-modal').setAttribute('hidden', '')}">
-            OK
-          </button>
-        </div>
-      </div>
-
-      <div class="taskbar">
-        <button class="taskbar-start">
-          <div class="taskbar-start-logo"></div>
-          Start
-        </button>
-        <div class="taskbar-divider"></div>
-        <div class="taskbar-window">
-          <div class="taskbar-window-icon"></div>
-          Document1 - Microsoft Word
-        </div>
-        <div class="taskbar-clock" id="taskbar-clock"></div>
-      </div>
-    `,
+    value: homeTemplate(onInput, onClickMinimize, onClickClose, onClickSave, onClickHelp),
     shadow: false,
   },
 });
