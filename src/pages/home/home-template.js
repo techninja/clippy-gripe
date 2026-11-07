@@ -63,7 +63,12 @@ export function homeTemplate(onInput, onClickMinimize, onClickClose, onClickSave
         <div class="taskbar-window-icon"></div>
         Document1 - Microsoft Word
       </div>
-      <div class="taskbar-offline" title="No network connection — Clippy sees everything. No one else does.">📵</div>
+      <div
+        class="taskbar-offline"
+        title="No network connection — Clippy sees everything. No one else does."
+      >
+        📵
+      </div>
       <div class="taskbar-clock" id="taskbar-clock"></div>
     </div>
   `;

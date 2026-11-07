@@ -659,7 +659,9 @@
       "I had to look three things up. I'm a paperclip."
     ]
   },
-    "clippy_line": "It looks like you're venting at a document that cannot venting back.",
+  {
+    "id": "rant",
+    "clippy_line": "It looks like you're venting at a document that cannot vent back.",
     "animation": "Explain",
     "suggestions": [
       "This is cheaper than therapy, I'll give you that",

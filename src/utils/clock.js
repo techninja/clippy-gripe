@@ -10,7 +10,7 @@ export function startClock(id) {
     if (el)
       el.textContent = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
   };
-  tick();
+  setTimeout(tick, 0);
   const t = setInterval(tick, 10000);
   return () => clearInterval(t);
 }
