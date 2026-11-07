@@ -1,10 +1,10 @@
-# clippy-help
+# clippy-gripe
 
 > It looks like you're reading a README. Would you like help with that?
 
 A single-page static site that watches you type and judges you for it. Powered by a tiny in-browser text classifier and an animated Clippy who has made his peace with being hated.
 
-**[clippy.help](https://clippy.help)**
+**[clippy.gripe](https://clippy.gripe)**
 
 ## What it does
 

@@ -1,5 +1,5 @@
 {
-  "name": "clippy-help",
+  "name": "clippy-gripe",
   "version": "0.1.0",
   "type": "module",
   "description": "A Clearstack project",
@@ -21,7 +21,8 @@
     "postinstall": "node scripts/setup.js",
     "test": "node scripts/test.js",
     "spec": "node scripts/spec.js",
-    "release": "node scripts/release.js"
+    "release": "node scripts/release.js",
+    "deploy": "wrangler pages deploy src"
   },
   "keywords": [
     "hybrids",
@@ -35,9 +36,9 @@
     "lucide-static": "^1.7.0"
   },
   "devDependencies": {
+    "@open-wc/testing": "^4.0.0",
     "@techninja/clearstack": "^0.4.42",
     "@types/node": "^22.0.0",
-    "@open-wc/testing": "^4.0.0",
     "@web/test-runner": "^0.20.0",
     "@web/test-runner-playwright": "^0.11.0",
     "eslint": "^10.1.0",
@@ -49,6 +50,7 @@
     "prettier": "^3.8.1",
     "stylelint": "^17.6.0",
     "stylelint-config-standard": "^40.0.0",
-    "typescript": "^6.0.2"
+    "typescript": "^6.0.2",
+    "wrangler": "^4.158.0"
   }
 }

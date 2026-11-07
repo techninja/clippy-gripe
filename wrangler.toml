@@ -1,0 +1,3 @@
+name = "clippy-gripe"
+send_metrics = false
+pages_build_output_dir = "src"
