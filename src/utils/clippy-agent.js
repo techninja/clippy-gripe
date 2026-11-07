@@ -37,7 +37,11 @@ export async function initClippy() {
   // measures at full size before positioning, eliminating the grow-from-left bug.
   a._balloon._content.style.maxWidth = '320px';
   a._balloon._content.style.minWidth = '160px';
+  let balloonTimer = null;
+
   a._balloon._sayWords = function (text, hold, complete) {
+    window.clearTimeout(balloonTimer);
+    window.clearTimeout(this._loop);
     this._content.style.height = 'auto';
     this._content.style.width = 'auto';
     this._content.textContent = text;
@@ -45,14 +49,22 @@ export async function initClippy() {
     this._hold = hold;
     this._complete = complete;
     this.reposition();
-    if (!hold) {
-      this._loop = window.setTimeout(() => {
-        this._active = false;
-        complete();
-        this.hide();
-      }, this.CLOSE_BALLOON_DELAY);
-    }
+    balloonTimer = window.setTimeout(() => {
+      this._active = false;
+      this._hidden = true;
+      this._balloon.style.display = 'none';
+      if (!hold) complete();
+    }, this.CLOSE_BALLOON_DELAY);
   };
+
+  // Safety valve — force-hide if balloon lingers beyond 12s
+  setInterval(() => {
+    if (a._balloon._balloon.style.display !== 'none' && !a._balloon._active) {
+      window.clearTimeout(balloonTimer);
+      a._balloon._hidden = true;
+      a._balloon._balloon.style.display = 'none';
+    }
+  }, 3000);
 
   // Shift balloon left after full-size reposition
   const _origPosition = a._balloon._position.bind(a._balloon);
@@ -70,6 +82,9 @@ export async function initClippy() {
 export function clippySpeak(text) {
   const a = getAgent();
   if (!a) return;
+  a._balloon._balloon.style.display = 'none';
+  a._balloon._hidden = true;
+  a._balloon._active = false;
   a.stop();
   a.speak(text, false);
 }
