@@ -6,11 +6,15 @@
 import { define } from 'hybrids';
 import { loadBrain, classifyText } from '#utils/classify.js';
 import { getAgent, initClippy, clippySpeak } from '#utils/clippy-agent.js';
+import { startClock } from '#utils/clock.js';
 import { homeTemplate } from './home-template.js';
+import { EARLY_LINES, PASTE_LINES, DELETE_ALL_LINES, DELETE_MOST_LINES, LONG_DOC_LINES } from './clippy-lines.js';
 
-const TYPING_THRESHOLD = 50;
 const TYPING_DEBOUNCE = 900;
-const CLIPPY_APPEAR_AT = 3;
+const CLASSIFY_AT = 50;
+const APPEAR_AT = 3;
+const EARLY_AT = 15;
+const REFIRE_DELTA = 80; // re-allow same category after this many chars change
 
 window.__clippyLoading = false; // reset on each module eval
 
@@ -20,16 +24,28 @@ let brain = null;
 let debounceTimer = null;
 /** @type {string|null} */
 let lastCategory = null;
+/** @type {number} */
+let lastCategoryAt = 0;
+/** @type {number} */
+let prevLength = 0;
+/** @type {boolean} */
+let firedLong = false;
+
+/** @param {string[]} lines @returns {string} */
+const pick = (lines) => lines[Math.floor(Math.random() * lines.length)];
 
 /**
  * Deliver category line + follow-up aside 4.5s later.
- * @param {any} host @param {string} categoryId
+ * @param {any} host @param {string} categoryId @param {boolean} [force]
  */
-function showCategory(host, categoryId) {
+function showCategory(host, categoryId, force = false) {
   const a = getAgent();
   const cat = host.categories.find((c) => c.id === categoryId);
-  if (!cat || categoryId === lastCategory || !a) return;
+  if (!cat || !a) return;
+  const textLen = host.querySelector?.('.paper')?.innerText?.length ?? 0;
+  if (!force && categoryId === lastCategory && Math.abs(textLen - lastCategoryAt) < REFIRE_DELTA) return;
   lastCategory = categoryId;
+  lastCategoryAt = textLen;
   clippySpeak(cat.clippy_line);
   a.play(cat.animation);
   const aside = cat.suggestions[Math.floor(Math.random() * cat.suggestions.length)];
@@ -41,22 +57,77 @@ function showCategory(host, categoryId) {
 /** @param {any} host @param {Event} e */
 function onInput(host, e) {
   const text = /** @type {HTMLElement} */ (e.currentTarget).innerText || '';
+  const len = text.trim().length;
+  const delta = len - prevLength;
 
-  if (text.length >= CLIPPY_APPEAR_AT && !getAgent()) initClippy();
-  if (text.length < 2 && getAgent()) {
-    getAgent().play('Wave');
+  // Appear
+  if (len >= APPEAR_AT && !getAgent()) initClippy();
+
+  // Clear everything
+  if (len === 0 && prevLength > 10) {
+    prevLength = 0;
     lastCategory = null;
+    firedLong = false;
+    getAgent()?.play('Wave');
+    setTimeout(() => clippySpeak(pick(DELETE_ALL_LINES)), 600);
+    return;
   }
 
-  clearTimeout(debounceTimer);
-  if (text.length < TYPING_THRESHOLD || !host.categories.length) return;
+  // Big paste
+  if (delta >= 100) {
+    prevLength = len;
+    clearTimeout(debounceTimer);
+    clippySpeak(pick(PASTE_LINES));
+    getAgent()?.play('GetAttention');
+    if (len >= CLASSIFY_AT && host.categories.length) {
+      debounceTimer = setTimeout(() => classify(host, text), TYPING_DEBOUNCE);
+    }
+    return;
+  }
 
-  debounceTimer = setTimeout(() => {
-    const id = brain?.classes.length
-      ? classifyText(text, brain)
-      : host.categories[Math.floor(Math.random() * host.categories.length)].id;
-    showCategory(host, id);
-  }, TYPING_DEBOUNCE);
+  // Deleted a lot (50%+ gone, was substantial)
+  if (delta <= -80 && prevLength >= 100) {
+    prevLength = len;
+    lastCategory = null;
+    clippySpeak(pick(DELETE_MOST_LINES));
+    getAgent()?.play('Sad');
+    return;
+  }
+
+  prevLength = len;
+
+  clearTimeout(debounceTimer);
+
+  // Early vague reaction
+  if (len >= EARLY_AT && len < CLASSIFY_AT && lastCategory === null) {
+    debounceTimer = setTimeout(() => {
+      if (lastCategory === null) {
+        clippySpeak(pick(EARLY_LINES));
+        getAgent()?.play('Thinking');
+        lastCategory = '__early__';
+      }
+    }, TYPING_DEBOUNCE);
+    return;
+  }
+
+  if (len < CLASSIFY_AT || !host.categories.length) return;
+
+  // Long doc milestone
+  if (!firedLong && len >= 500) {
+    firedLong = true;
+    clippySpeak(pick(LONG_DOC_LINES));
+    getAgent()?.play('Idle1_1');
+  }
+
+  debounceTimer = setTimeout(() => classify(host, text), TYPING_DEBOUNCE);
+}
+
+/** @param {any} host @param {string} text */
+function classify(host, text) {
+  const id = brain?.classes.length
+    ? classifyText(text, brain)
+    : host.categories[Math.floor(Math.random() * host.categories.length)].id;
+  showCategory(host, id);
 }
 
 /** @param {any} host */
@@ -99,17 +170,7 @@ export default define({
         })
         .catch(() => {});
 
-      const tick = () => {
-        const el = document.getElementById('taskbar-clock');
-        if (el)
-          el.textContent = new Date().toLocaleTimeString([], {
-            hour: '2-digit',
-            minute: '2-digit',
-          });
-      };
-      tick();
-      const t = setInterval(tick, 10000);
-      return () => clearInterval(t);
+      return startClock('taskbar-clock');
     },
   },
   render: {
