@@ -30,6 +30,36 @@ export async function initClippy() {
 
   a.show();
   a.play('GetAttention');
+  a._balloon.WORD_SPEAK_TIME = 60;
+  a._balloon.CLOSE_BALLOON_DELAY = 4000;
+
+  // Widen balloon and fix sizing — skip word-by-word typing so the balloon
+  // measures at full size before positioning, eliminating the grow-from-left bug.
+  a._balloon._content.style.maxWidth = '320px';
+  a._balloon._content.style.minWidth = '160px';
+  a._balloon._sayWords = function (text, hold, complete) {
+    this._content.style.height = 'auto';
+    this._content.style.width = 'auto';
+    this._content.textContent = text;
+    this._active = true;
+    this._hold = hold;
+    this._complete = complete;
+    this.reposition();
+    if (!hold) {
+      this._loop = window.setTimeout(() => {
+        this._active = false;
+        complete();
+        this.hide();
+      }, this.CLOSE_BALLOON_DELAY);
+    }
+  };
+
+  // Shift balloon left after full-size reposition
+  const _origPosition = a._balloon._position.bind(a._balloon);
+  a._balloon._position = function (side) {
+    _origPosition(side);
+    this._balloon.style.left = parseFloat(this._balloon.style.left) - 60 + 'px';
+  };
 }
 
 /**
