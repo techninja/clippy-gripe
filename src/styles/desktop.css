@@ -1,0 +1,127 @@
+/* Win98 desktop */
+body {
+  background: #008080;
+  margin: 0;
+}
+
+/* Taskbar */
+.taskbar {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 28px;
+  background: #c0c0c0;
+  border-top: 2px solid #fff;
+  display: flex;
+  align-items: center;
+  padding: 0 2px;
+  gap: 4px;
+  z-index: 100;
+  font-family: Arial, sans-serif;
+  font-size: 11px;
+}
+
+.taskbar-start {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  padding: 2px 6px;
+  background: #c0c0c0;
+  border: 2px solid;
+  border-color: #fff #808080 #808080 #fff;
+  font-weight: bold;
+  cursor: default;
+  height: 22px;
+  box-sizing: border-box;
+}
+
+.taskbar-start:active {
+  border-color: #808080 #fff #fff #808080;
+}
+
+.taskbar-start-logo {
+  width: 16px;
+  height: 16px;
+  background: linear-gradient(135deg, #f00 0% 25%, #0f0 25% 50%, #00f 50% 75%, #ff0 75% 100%);
+  flex-shrink: 0;
+}
+
+.taskbar-divider {
+  width: 1px;
+  height: 20px;
+  background: #808080;
+  border-right: 1px solid #fff;
+  margin: 0 2px;
+}
+
+.taskbar-window {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  padding: 2px 8px;
+  background: #c0c0c0;
+  border: 2px solid;
+  border-color: #808080 #fff #fff #808080;
+  height: 22px;
+  box-sizing: border-box;
+  min-width: 120px;
+  cursor: default;
+}
+
+.taskbar-window-icon {
+  width: 14px;
+  height: 14px;
+  background: #fff;
+  border: 1px solid #000;
+  flex-shrink: 0;
+}
+
+.taskbar-clock {
+  margin-left: auto;
+  padding: 2px 6px;
+  border: 1px solid;
+  border-color: #808080 #fff #fff #808080;
+  height: 22px;
+  box-sizing: border-box;
+  display: flex;
+  align-items: center;
+}
+
+/* Crash modal */
+.crash-modal {
+  position: fixed;
+  inset: 0;
+  background: rgb(0 0 0 / 50%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 9999;
+}
+
+.crash-modal[hidden] {
+  display: none;
+}
+
+.crash-box {
+  background: #000080;
+  color: #fff;
+  font-family: 'Courier New', monospace;
+  font-size: 14px;
+  padding: 2rem;
+  max-width: 480px;
+  border: 2px solid #fff;
+  text-align: center;
+}
+
+.crash-box button {
+  margin-top: 1.5rem;
+  padding: 0.25rem 2rem;
+  background: #c0c0c0;
+  color: #000;
+  border: 2px solid;
+  border-color: #fff #808080 #808080 #fff;
+  font-family: inherit;
+  font-size: 14px;
+  cursor: pointer;
+}

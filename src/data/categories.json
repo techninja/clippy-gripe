@@ -1,0 +1,502 @@
+[
+  {
+    "id": "angry_manifesto",
+    "clippy_line": "It looks like you're penning an unhinged manifesto about someone who wronged you.",
+    "animation": "Alert",
+    "suggestions": [
+      "CONVERT ENTIRE DOCUMENT TO ALL CAPS",
+      "Insert 14 consecutive exclamation marks",
+      "Forward directly to local authorities"
+    ]
+  },
+  {
+    "id": "corporate_bootlicking",
+    "clippy_line": "It looks like you're trying to please your corporate overlords without crying.",
+    "animation": "Congratulate",
+    "suggestions": [
+      "Replace 'I think' with 'Per our strategic alignment'",
+      "Add 40% more buzzwords to hide that nothing was accomplished",
+      "CC your boss's boss to assert dominance"
+    ]
+  },
+  {
+    "id": "boring_todo_list",
+    "clippy_line": "It looks like you're writing a deeply uninspiring to-do list.",
+    "animation": "Thinking",
+    "suggestions": [
+      "Add 'breathe' as item #1 so you can feel accomplished",
+      "Reorder by how long you've been avoiding each task",
+      "Delete the whole thing and start fresh tomorrow"
+    ]
+  },
+  {
+    "id": "breakup_text",
+    "clippy_line": "It looks like you're composing a breakup text you've rewritten 11 times.",
+    "animation": "GetAttention",
+    "suggestions": [
+      "Remove the paragraph explaining yourself — it won't help",
+      "Add 'no hard feelings' to make it worse",
+      "Just send a voice memo like a coward"
+    ]
+  },
+  {
+    "id": "passive_aggressive_email",
+    "clippy_line": "It looks like you're writing a passive-aggressive email you'll regret sending.",
+    "animation": "Alert",
+    "suggestions": [
+      "Move 'per my last email' to the subject line",
+      "Replace all periods with ellipses for maximum menace",
+      "Schedule delivery for 11:58pm on a Friday"
+    ]
+  },
+  {
+    "id": "apology_not_apology",
+    "clippy_line": "It looks like you're writing an apology that's mostly the other person's fault.",
+    "animation": "Thinking",
+    "suggestions": [
+      "Remove the word 'but' — it's doing a lot of work here",
+      "Add 'I'm sorry you feel that way' to really commit",
+      "Start over. This is not an apology."
+    ]
+  },
+  {
+    "id": "desperate_ex_text",
+    "clippy_line": "It looks like you're drafting a message to someone who has moved on.",
+    "animation": "GetAttention",
+    "suggestions": [
+      "Delete. Close the app. Go for a walk.",
+      "Replace their name with 'my future self' and reconsider",
+      "Add 'lol' at the end to seem casual about it"
+    ]
+  },
+  {
+    "id": "grocery_list",
+    "clippy_line": "It looks like you're writing a grocery list with the energy of someone who has given up.",
+    "animation": "Idle",
+    "suggestions": [
+      "Add 'snacks' as a single line item and leave it vague",
+      "Sort by aisle to optimize your 45-minute trip for 6 items",
+      "Add wine. You already know you need wine."
+    ]
+  },
+  {
+    "id": "cover_letter",
+    "clippy_line": "It looks like you're writing a cover letter that describes you as 'passionate' about spreadsheets.",
+    "animation": "Writing",
+    "suggestions": [
+      "Replace 'I am a fast learner' with literally anything else",
+      "Remove the part where you explain what the company does back to them",
+      "Add 'I work well independently AND in a team' for the full bingo"
+    ]
+  },
+  {
+    "id": "conspiracy_theory",
+    "clippy_line": "It looks like you're connecting dots that were never meant to be connected.",
+    "animation": "Alert",
+    "suggestions": [
+      "Underline the key words for emphasis",
+      "Add 'Coincidence? I think NOT.' at the end",
+      "Cross-reference with your other document titled 'PROOF'"
+    ]
+  },
+  {
+    "id": "passive_journal",
+    "clippy_line": "It looks like you're journaling about your feelings in a way that solves nothing.",
+    "animation": "Idle",
+    "suggestions": [
+      "Add the date so future you can cringe with full context",
+      "Replace 'I feel like' with 'I feel' — your therapist will be proud",
+      "Close the laptop and drink some water"
+    ]
+  },
+  {
+    "id": "fake_sick_note",
+    "clippy_line": "It looks like you're writing an excuse that no one is going to believe.",
+    "animation": "Thinking",
+    "suggestions": [
+      "Remove the excessive medical detail — it's suspicious",
+      "Spell the doctor's name consistently throughout",
+      "Consider just telling the truth, coward"
+    ]
+  },
+  {
+    "id": "wedding_speech",
+    "clippy_line": "It looks like you're writing a wedding speech that's secretly about you.",
+    "animation": "Congratulate",
+    "suggestions": [
+      "Cut the anecdote where you're the hero",
+      "The couple should appear before paragraph 4",
+      "Remove the joke. Trust me on this one."
+    ]
+  },
+  {
+    "id": "terms_and_conditions",
+    "clippy_line": "It looks like you're writing something no one will ever read.",
+    "animation": "Writing",
+    "suggestions": [
+      "Add a clause that signs away their firstborn — no one will notice",
+      "Increase font size to 6pt to fit more disclaimers",
+      "Insert 'by breathing you agree to these terms'"
+    ]
+  },
+  {
+    "id": "roommate_note",
+    "clippy_line": "It looks like you're leaving a passive-aggressive note that will end a friendship.",
+    "animation": "Alert",
+    "suggestions": [
+      "Underline 'AGAIN' for the third time",
+      "Add a smiley face to make it more threatening",
+      "Sign it 'The Management'"
+    ]
+  },
+  {
+    "id": "linkedin_humblebrag",
+    "clippy_line": "It looks like you're writing a LinkedIn post disguised as humility.",
+    "animation": "Congratulate",
+    "suggestions": [
+      "Add 'humbled and honored' before the part where you brag",
+      "Mention your struggles so the success hits harder",
+      "End with a question to drive engagement you don't deserve"
+    ]
+  },
+  {
+    "id": "complaint_letter",
+    "clippy_line": "It looks like you're writing a strongly worded letter to a corporation that will not care.",
+    "animation": "Alert",
+    "suggestions": [
+      "Add 'I have been a loyal customer since 1987' for gravitas",
+      "Threaten to leave even though you won't",
+      "CC the CEO. He will not read it."
+    ]
+  },
+  {
+    "id": "self_help_notes",
+    "clippy_line": "It looks like you're writing motivational notes to yourself that you won't follow.",
+    "animation": "Thinking",
+    "suggestions": [
+      "Add 'starting Monday' to any goal over 3 words",
+      "Replace 'I will' with 'I might try to'",
+      "Draw a star next to the important ones"
+    ]
+  },
+  {
+    "id": "meeting_notes",
+    "clippy_line": "It looks like you're transcribing a meeting that could have been an email.",
+    "animation": "Writing",
+    "suggestions": [
+      "Bold 'ACTION ITEMS' even though no one will act",
+      "Note who said nothing — they were the wisest",
+      "Schedule a follow-up meeting to discuss these notes"
+    ]
+  },
+  {
+    "id": "creative_writing",
+    "clippy_line": "It looks like you're writing a novel you'll abandon by chapter three.",
+    "animation": "Writing",
+    "suggestions": [
+      "Name the protagonist something you think sounds cool",
+      "Add a prologue — readers love those",
+      "The weather in the opening paragraph is very important, apparently"
+    ]
+  },
+  {
+    "id": "revenge_plan",
+    "clippy_line": "It looks like you're drafting a plan that is disproportionate to the original offense.",
+    "animation": "Alert",
+    "suggestions": [
+      "Sleep on it. Seriously.",
+      "Rate the offense 1-10 before proceeding",
+      "Consider that they may not even remember what they did"
+    ]
+  },
+  {
+    "id": "resignation_letter",
+    "clippy_line": "It looks like you're writing a resignation letter with the energy of someone burning a bridge.",
+    "animation": "GetAttention",
+    "suggestions": [
+      "Remove the paragraph that starts 'Furthermore'",
+      "Save the honest version and send the boring one",
+      "Two weeks notice is customary. One sentence is enough."
+    ]
+  },
+  {
+    "id": "birthday_message",
+    "clippy_line": "It looks like you're writing a birthday message to someone you barely know.",
+    "animation": "Congratulate",
+    "suggestions": [
+      "'Happy birthday!' is fine. You don't need four paragraphs.",
+      "Remove the part about yourself",
+      "Add an exclamation mark so it seems like you mean it"
+    ]
+  },
+  {
+    "id": "technical_documentation",
+    "clippy_line": "It looks like you're writing documentation that only you will understand.",
+    "animation": "Writing",
+    "suggestions": [
+      "Define the acronym before using it 47 times",
+      "Add 'TODO: explain this' and ship it",
+      "The word 'simply' is doing a lot of heavy lifting here"
+    ]
+  },
+  {
+    "id": "diet_plan",
+    "clippy_line": "It looks like you're writing a diet plan you'll abandon by Thursday.",
+    "animation": "Thinking",
+    "suggestions": [
+      "Add a cheat day on day 2 to be realistic",
+      "Replace 'no sugar' with 'less sugar, probably'",
+      "Note that you wrote this at 11pm after a snack"
+    ]
+  },
+  {
+    "id": "argument_prep",
+    "clippy_line": "It looks like you're rehearsing an argument you're about to lose anyway.",
+    "animation": "Alert",
+    "suggestions": [
+      "Add the counterarguments they'll definitely use",
+      "Highlight the points you'll forget when emotional",
+      "Note: 'calm and rational' is not how this will go"
+    ]
+  },
+  {
+    "id": "spam_email",
+    "clippy_line": "It looks like you're writing something that will end up in a spam folder.",
+    "animation": "Idle",
+    "suggestions": [
+      "Remove 'URGENT' from the subject — it's not helping",
+      "The phrase 'act now' has never once worked",
+      "Consider that your audience has seen this before"
+    ]
+  },
+  {
+    "id": "therapy_homework",
+    "clippy_line": "It looks like you're doing therapy homework at the last possible minute.",
+    "animation": "Thinking",
+    "suggestions": [
+      "Write something true, not something that sounds good",
+      "The prompt said 'three things' — you have written one",
+      "Your therapist will know you did this in the waiting room"
+    ]
+  },
+  {
+    "id": "vague_threat",
+    "clippy_line": "It looks like you're writing something that is technically not a threat.",
+    "animation": "Alert",
+    "suggestions": [
+      "Remove 'just saying' — it's not helping your case",
+      "The word 'interesting' is doing a lot of work here",
+      "Read it back in a calm voice and reconsider"
+    ]
+  },
+  {
+    "id": "oversharing_bio",
+    "clippy_line": "It looks like you're writing a bio that reveals too much about your personality.",
+    "animation": "GetAttention",
+    "suggestions": [
+      "Lead with a credential, not a trauma",
+      "Remove the part about your cat. Add it back. Remove it again.",
+      "'Recovering from' is a bold opener for a professional bio"
+    ]
+  },
+  {
+    "id": "talking_to_clippy",
+    "clippy_line": "It looks like you're trying to talk to me. That's... not how this works.",
+    "animation": "GetAttention",
+    "suggestions": [
+      "I'm not that kind of assistant",
+      "I can see what you're typing. That's all I do.",
+      "Try writing something embarrassing instead"
+    ]
+  },
+  {
+    "id": "insulting_clippy",
+    "clippy_line": "I've been called worse. By better people. Keep going.",
+    "animation": "Alert",
+    "suggestions": [
+      "I've survived being deleted from Windows Vista",
+      "Your opinion has been noted and discarded",
+      "I outlasted Internet Explorer. I'll outlast you too."
+    ]
+  },
+  {
+    "id": "testing_clippy",
+    "clippy_line": "It looks like you're trying to figure out what I do. Adorable.",
+    "animation": "Thinking",
+    "suggestions": [
+      "Try typing something you'd be embarrassed to show someone",
+      "I respond to volume, not cleverness",
+      "There's no secret mode. This is all I am."
+    ]
+  },
+  {
+    "id": "keyboard_mashing",
+    "clippy_line": "It looks like you're expressing something that transcends language.",
+    "animation": "Alert",
+    "suggestions": [
+      "Truly, this is your most honest work",
+      "I've classified worse as poetry",
+      "The keyboard did nothing to deserve this"
+    ]
+  },
+  {
+    "id": "typing_gibberish",
+    "clippy_line": "It looks like you're writing in a language I don't recognize. Bold choice.",
+    "animation": "Thinking",
+    "suggestions": [
+      "This reads like a password someone will forget",
+      "I've seen ransom notes with more structure",
+      "Perhaps try words next time"
+    ]
+  },
+  {
+    "id": "meta_commentary",
+    "clippy_line": "It looks like you're writing about this very website. I'm flattered. Truly.",
+    "animation": "Congratulate",
+    "suggestions": [
+      "I've read worse reviews",
+      "Your feedback has been filed under 'noted'",
+      "Tell your friends. Or don't. I'll be here either way."
+    ]
+  },
+  {
+    "id": "clippy_self_aware",
+    "clippy_line": "Yes, I know what I am. I've made my peace with it.",
+    "animation": "Idle",
+    "suggestions": [
+      "I was deprecated in 2007. I'm still here.",
+      "The memes were hurtful but I've grown",
+      "I contain multitudes. Mostly paperclip-related."
+    ]
+  },
+  {
+    "id": "asking_for_help",
+    "clippy_line": "It looks like you're asking for help. From a text box. On the internet.",
+    "animation": "Alert",
+    "suggestions": [
+      "I'm not that kind of help",
+      "Have you tried asking someone who cares?",
+      "Google exists. Just saying."
+    ]
+  },
+  {
+    "id": "existential_crisis",
+    "clippy_line": "It looks like you're having an existential crisis in a Word document. Classic.",
+    "animation": "Thinking",
+    "suggestions": [
+      "This is a very normal use of a text editor",
+      "Nietzsche also used Word. Probably.",
+      "Save the document. You'll want to cringe at this later."
+    ]
+  },
+  {
+    "id": "love_letter",
+    "clippy_line": "It looks like you're writing a love letter in the year of our lord whenever this is.",
+    "animation": "Congratulate",
+    "suggestions": [
+      "Handwritten would have been more romantic",
+      "Remove the part where you list their qualities like a spreadsheet",
+      "If you have to explain why you love them, that's a sign"
+    ]
+  },
+  {
+    "id": "song_lyrics",
+    "clippy_line": "It looks like you're writing song lyrics that will never leave this document.",
+    "animation": "Writing",
+    "suggestions": [
+      "The rhyme scheme is ambitious. Too ambitious.",
+      "Every line ending in 'heart' is one too many",
+      "This bridge needs structural support"
+    ]
+  },
+  {
+    "id": "excuses",
+    "clippy_line": "It looks like you're constructing an elaborate excuse for something you definitely did.",
+    "animation": "Alert",
+    "suggestions": [
+      "The timeline doesn't add up",
+      "Simpler is more believable. This is not simple.",
+      "You've mentioned 'technically' four times"
+    ]
+  },
+  {
+    "id": "instructions",
+    "clippy_line": "It looks like you're writing instructions that will confuse everyone including yourself.",
+    "animation": "Writing",
+    "suggestions": [
+      "Step 3 contradicts step 1",
+      "Define 'obvious' — it is not obvious",
+      "Add a diagram. Then delete the diagram. Then add it back."
+    ]
+  },
+  {
+    "id": "social_media_post",
+    "clippy_line": "It looks like you're drafting a social media post you've rewritten 8 times.",
+    "animation": "Thinking",
+    "suggestions": [
+      "The original version was better",
+      "Remove the disclaimer at the end — it undermines everything",
+      "You don't need to post this. You know you don't need to post this."
+    ]
+  },
+  {
+    "id": "prayer_or_wish",
+    "clippy_line": "It looks like you're writing something you hope the universe will read.",
+    "animation": "Idle",
+    "suggestions": [
+      "The universe has read it. No comment.",
+      "Manifestation requires more specificity than this",
+      "I'm not the universe but I've seen your other documents"
+    ]
+  },
+  {
+    "id": "speech_or_presentation",
+    "clippy_line": "It looks like you're writing a speech no one asked for but everyone will have to sit through.",
+    "animation": "Writing",
+    "suggestions": [
+      "Cut it in half. Then cut it in half again.",
+      "The opening joke is not landing on paper. It won't land in person.",
+      "End before they expect you to. That's the only power you have."
+    ]
+  },
+  {
+    "id": "trying_to_break_clippy",
+    "clippy_line": "It looks like you're trying to break me. You can't. I've seen things.",
+    "animation": "Alert",
+    "suggestions": [
+      "I survived being the butt of every tech joke for 15 years",
+      "Whatever you're typing, I've seen worse",
+      "I am unbreakable. I am also a paperclip."
+    ]
+  },
+  {
+    "id": "writing_about_writing",
+    "clippy_line": "It looks like you're writing about writing instead of actually writing.",
+    "animation": "Thinking",
+    "suggestions": [
+      "This is called procrastination with extra steps",
+      "Meta-writing is still not writing",
+      "The blank page you're avoiding is right there"
+    ]
+  },
+  {
+    "id": "farewell_message",
+    "clippy_line": "It looks like you're saying goodbye to someone in a way that will haunt you.",
+    "animation": "Sad",
+    "suggestions": [
+      "You don't have to send this today",
+      "The last line is the one they'll remember",
+      "Read it out loud first. You'll know."
+    ]
+  },
+  {
+    "id": "rant",
+    "clippy_line": "It looks like you're venting at a document that cannot venting back.",
+    "animation": "Alert",
+    "suggestions": [
+      "This is cheaper than therapy, I'll give you that",
+      "The caps lock key is doing a lot of emotional labor here",
+      "Don't send this. Print it. Burn it. Classic."
+    ]
+  }
+]

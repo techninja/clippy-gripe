@@ -1,0 +1,52 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document1 - Microsoft Word</title>
+    <style>html,body{background:#008080;margin:0}</style>
+    <link rel="stylesheet" href="/styles/reset.css" />
+    <link rel="stylesheet" href="/styles/desktop.css" />
+    <link rel="stylesheet" href="/styles/word.css" />
+
+    <script type="importmap">
+      {
+        "imports": {
+          "hybrids": "/vendor/hybrids/index.js",
+          "#store/": "/store/",
+          "#utils/": "/utils/",
+          "#atoms/": "/components/atoms/",
+          "#molecules/": "/components/molecules/",
+          "#organisms/": "/components/organisms/",
+          "#templates/": "/components/templates/",
+          "#pages/": "/pages/"
+        }
+      }
+    </script>
+  </head>
+  <body>
+    <noscript>
+      <div style="font-family:system-ui;padding:2rem;max-width:40rem;margin:4rem auto;text-align:center">
+        <h1>JavaScript required</h1>
+        <p>clippy-help requires JavaScript to run. Please enable it in your browser settings.</p>
+      </div>
+    </noscript>
+    <app-router></app-router>
+    <script type="module" src="/router/index.js"></script>
+    <script>
+      // Hot reload
+      (function () {
+        const es = new EventSource('/_reload');
+        es.addEventListener('reload', () => location.reload());
+        es.onerror = () => { es.close(); setTimeout(() => location.reload(), 500); };
+      })();
+      // Global error boundary — catches unhandled promise rejections and JS errors
+      window.addEventListener('unhandledrejection', (e) => {
+        console.error('[app] Unhandled rejection:', e.reason);
+      });
+      window.addEventListener('error', (e) => {
+        console.error('[app] Uncaught error:', e.message, e.filename, e.lineno);
+      });
+    </script>
+  </body>
+</html>
