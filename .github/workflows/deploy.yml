@@ -1,26 +1,40 @@
-name: Deploy
+name: CI
 
 on:
   push:
     branches: [main]
+  pull_request:
+    branches: [main]
 
 jobs:
-  deploy:
-    name: Deploy to Cloudflare Pages
+  spec:
+    name: Spec + Tests
     runs-on: ubuntu-latest
-
     steps:
-      - uses: actions/checkout@v6
-
-      - uses: actions/setup-node@v6
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
         with:
           node-version: 24
           cache: npm
-
       - run: npm ci
+      - run: npx playwright install chromium --with-deps
+      - run: node scripts/spec.js all
+      - run: node --test tests/*.test.js src/utils/*.test.js src/store/*.test.js
+      - run: npx web-test-runner --config .configs/web-test-runner.config.js
 
-      - name: Deploy to Cloudflare Pages
-        run: npx wrangler pages deploy src --project-name clippy-gripe
+  deploy:
+    name: Deploy to Cloudflare Pages
+    needs: spec
+    if: github.ref == 'refs/heads/main' && github.event_name == 'push'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: npm
+      - run: npm ci
+      - run: npx wrangler pages deploy src --project-name clippy-gripe
         env:
           CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}

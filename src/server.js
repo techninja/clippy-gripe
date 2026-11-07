@@ -27,13 +27,17 @@ watch('src', { recursive: true }, () => {
   for (const res of reloadClients) res.write('event: reload\ndata: {}\n\n');
 });
 
-const HOT_RELOAD_SNIPPET = '<script>(function(){const es=new EventSource("/_reload");es.addEventListener("reload",()=>location.reload());es.onerror=()=>{es.close();setTimeout(()=>location.reload(),500)};})();<\/script>';
+const HOT_RELOAD_SNIPPET =
+  '<script>(function(){const es=new EventSource("/_reload");es.addEventListener("reload",()=>location.reload());es.onerror=()=>{es.close();setTimeout(()=>location.reload(),500)};})();<\/script>';
 
 app.use(express.static('src'));
 
 app.use((req, res, next) => {
   if (req.method === 'GET' && !req.path.includes('.')) {
-    const html = readFileSync('src/index.html', 'utf8').replace('</body>', `${HOT_RELOAD_SNIPPET}</body>`);
+    const html = readFileSync('src/index.html', 'utf8').replace(
+      '</body>',
+      `${HOT_RELOAD_SNIPPET}</body>`,
+    );
     return res.type('html').send(html);
   }
   next();
