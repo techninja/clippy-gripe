@@ -74,17 +74,33 @@ export async function initClippy() {
   };
 }
 
-/**
- * Speak a line — clears any queued/active speech first so we never block.
- * Balloon auto-hides after clippyjs CLOSE_BALLOON_DELAY (2s post-last-word).
- * @param {string} text
- */
-export function clippySpeak(text) {
+let asideTimer = null;
+
+/** Cancel any pending aside or balloon — call before every new reaction. */
+export function cancelPending() {
+  window.clearTimeout(asideTimer);
+  asideTimer = null;
   const a = getAgent();
   if (!a) return;
-  a._balloon._balloon.style.display = 'none';
-  a._balloon._hidden = true;
+  window.clearTimeout(a._balloon._loop);
   a._balloon._active = false;
+  a._balloon._hidden = true;
+  a._balloon._balloon.style.display = 'none';
   a.stop();
+}
+
+/**
+ * Speak a line — cancels everything pending first.
+ */
+export function clippySpeak(text, aside = false) {
+  const a = getAgent();
+  if (!a) return;
+  if (!aside) cancelPending();
   a.speak(text, false);
+}
+
+/** Schedule an aside, cancellable. */
+export function clippyAside(text, delay) {
+  window.clearTimeout(asideTimer);
+  asideTimer = window.setTimeout(() => clippySpeak(text, true), delay);
 }

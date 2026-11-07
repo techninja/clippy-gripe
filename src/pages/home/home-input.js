@@ -4,7 +4,13 @@
  */
 
 import { classifyText } from '#utils/classify.js';
-import { getAgent, initClippy, clippySpeak } from '#utils/clippy-agent.js';
+import {
+  getAgent,
+  initClippy,
+  clippySpeak,
+  clippyAside,
+  cancelPending,
+} from '#utils/clippy-agent.js';
 import {
   EARLY_LINES,
   PASTE_LINES,
@@ -55,10 +61,7 @@ function showCategory(host, categoryId) {
   lastCategoryAt = textLen;
   clippySpeak(cat.clippy_line);
   a.play(cat.animation);
-  const aside = cat.suggestions[Math.floor(Math.random() * cat.suggestions.length)];
-  setTimeout(() => {
-    if (lastCategory === categoryId) clippySpeak(aside);
-  }, 4500);
+  clippyAside(cat.suggestions[Math.floor(Math.random() * cat.suggestions.length)], 4500);
 }
 
 function classify(host, text, fullText, brain) {
@@ -72,6 +75,7 @@ function classify(host, text, fullText, brain) {
 export function onInput(host, e, brain) {
   const text = e.currentTarget.innerText || '';
   saveDraft(text);
+  cancelPending();
   const len = text.trim().length;
   const delta = len - prevLength;
 
