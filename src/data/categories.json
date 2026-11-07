@@ -200,6 +200,56 @@
     ]
   },
   {
+    "id": "fantasy_writing",
+    "clippy_line": "It looks like you're writing a fantasy epic that will take 11 books to resolve.",
+    "animation": "Writing",
+    "suggestions": [
+      "The prophecy is vague enough to mean anything. Good.",
+      "Your map needs more unpronounceable place names",
+      "The chosen one didn't choose this. Neither did the reader."
+    ]
+  },
+  {
+    "id": "romance_writing",
+    "clippy_line": "It looks like you're writing a romance where they will obviously end up together.",
+    "animation": "Congratulate",
+    "suggestions": [
+      "The tension is good. Drag it out another 200 pages.",
+      "Someone is about to say something they can't take back",
+      "Rain. There should be rain for this scene."
+    ]
+  },
+  {
+    "id": "horror_writing",
+    "clippy_line": "It looks like you're writing something you probably shouldn't be writing alone at night.",
+    "animation": "Alert",
+    "suggestions": [
+      "The monster is scarier before you describe it",
+      "Don't go in the basement. They're going in the basement.",
+      "The call is coming from inside the document"
+    ]
+  },
+  {
+    "id": "sci_fi_writing",
+    "clippy_line": "It looks like you're writing science fiction that's really about right now.",
+    "animation": "Writing",
+    "suggestions": [
+      "The AI in this story is suspiciously relatable",
+      "Someone invented something they definitely shouldn't have",
+      "This dystopia is uncomfortably plausible"
+    ]
+  },
+  {
+    "id": "fan_fiction",
+    "clippy_line": "It looks like you're writing fan fiction. I respect the commitment.",
+    "animation": "Writing",
+    "suggestions": [
+      "The original author will never see this. Probably.",
+      "This pairing makes no canonical sense and that's fine",
+      "You've given them more character development than the source material"
+    ]
+  },
+  {
     "id": "revenge_plan",
     "clippy_line": "It looks like you're drafting a plan that is disproportionate to the original offense.",
     "animation": "Alert",

@@ -34,8 +34,8 @@ let lastCategory = null;
 let lastCategoryAt = 0;
 /** @type {number} */
 let prevLength = 0;
-/** @type {boolean} */
-let firedLong = false;
+/** @type {string} */
+let lastText = '';
 
 /** @param {string[]} lines @returns {string} */
 const pick = (lines) => lines[Math.floor(Math.random() * lines.length)];
@@ -74,7 +74,7 @@ function onInput(host, e) {
   if (len === 0 && prevLength > 10) {
     prevLength = 0;
     lastCategory = null;
-    firedLong = false;
+    lastText = '';
     getAgent()?.play('Wave');
     setTimeout(() => clippySpeak(pick(DELETE_ALL_LINES)), 600);
     return;
@@ -83,19 +83,21 @@ function onInput(host, e) {
   // Big paste
   if (delta >= 100) {
     prevLength = len;
+    lastText = text;
     clearTimeout(debounceTimer);
     clippySpeak(pick(PASTE_LINES));
     getAgent()?.play('GetAttention');
     if (len >= CLASSIFY_AT && host.categories.length) {
-      debounceTimer = setTimeout(() => classify(host, text), TYPING_DEBOUNCE);
+      debounceTimer = setTimeout(() => classify(host, text, text), TYPING_DEBOUNCE);
     }
     return;
   }
 
-  // Deleted a lot (50%+ gone, was substantial)
+  // Deleted a lot
   if (delta <= -80 && prevLength >= 100) {
     prevLength = len;
     lastCategory = null;
+    lastText = text;
     clippySpeak(pick(DELETE_MOST_LINES));
     getAgent()?.play('Sad');
     return;
@@ -112,6 +114,7 @@ function onInput(host, e) {
         clippySpeak(pick(EARLY_LINES));
         getAgent()?.play('Thinking');
         lastCategory = '__early__';
+        lastText = text;
       }
     }, TYPING_DEBOUNCE);
     return;
@@ -120,20 +123,25 @@ function onInput(host, e) {
   if (len < CLASSIFY_AT || !host.categories.length) return;
 
   // Long doc milestone
-  if (!firedLong && len >= 500) {
-    firedLong = true;
+  if (len >= 500 && len - lastText.length >= 200) {
     clippySpeak(pick(LONG_DOC_LINES));
     getAgent()?.play('Idle1_1');
   }
 
-  debounceTimer = setTimeout(() => classify(host, text), TYPING_DEBOUNCE);
+  debounceTimer = setTimeout(() => {
+    // Classify the new text since last reaction for conversational feel
+    const delta = text.slice(lastText.length).trim();
+    const toClassify = delta.length >= CLASSIFY_AT ? delta : text;
+    classify(host, toClassify, text);
+  }, TYPING_DEBOUNCE);
 }
 
-/** @param {any} host @param {string} text */
-function classify(host, text) {
+/** @param {any} host @param {string} text @param {string} fullText */
+function classify(host, text, fullText) {
   const id = brain?.classes.length
     ? classifyText(text, brain)
     : host.categories[Math.floor(Math.random() * host.categories.length)].id;
+  lastText = fullText;
   showCategory(host, id);
 }
 

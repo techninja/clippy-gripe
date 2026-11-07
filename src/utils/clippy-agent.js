@@ -58,7 +58,7 @@ export async function initClippy() {
   const _origPosition = a._balloon._position.bind(a._balloon);
   a._balloon._position = function (side) {
     _origPosition(side);
-    this._balloon.style.left = parseFloat(this._balloon.style.left) - 60 + 'px';
+    this._balloon.style.left = parseFloat(this._balloon.style.left) - 30 + 'px';
   };
 }
 
