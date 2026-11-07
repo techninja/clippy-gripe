@@ -5,10 +5,10 @@
 
 import { define } from 'hybrids';
 import { loadBrain } from '#utils/classify.js';
-import { getAgent, clippySpeak } from '#utils/clippy-agent.js';
+import { getAgent, initClippy, clippySpeak } from '#utils/clippy-agent.js';
 import { startClock } from '#utils/clock.js';
 import { homeTemplate } from './home-template.js';
-import { onInput } from './home-input.js';
+import { onInput, loadDraft } from './home-input.js';
 
 window.__clippyLoading = false;
 
@@ -42,6 +42,15 @@ export default define({
         .then((r) => r.json())
         .then((d) => {
           host.categories = d;
+          const draft = loadDraft();
+          if (!draft) return;
+          const paper = host.querySelector('.paper');
+          if (paper) paper.innerText = draft;
+          if (draft.trim().length >= 3) {
+            initClippy().then(() => {
+              setTimeout(() => onInput(host, { currentTarget: paper }, brain), 1500);
+            });
+          }
         });
       loadBrain()
         .then((b) => {

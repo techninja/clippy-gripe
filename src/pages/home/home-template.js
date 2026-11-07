@@ -37,7 +37,11 @@ export function homeTemplate(onInput, onClickMinimize, onClickClose, onClickSave
           spellcheck="false"
           data-placeholder="Start typing..."
           oninput="${onInput}"
-          onpaste="${(h, e) => { e.preventDefault(); const text = e.clipboardData.getData('text/plain'); document.execCommand('insertText', false, text); }}"
+          onpaste="${(h, e) => {
+            e.preventDefault();
+            const text = e.clipboardData.getData('text/plain');
+            document.execCommand('insertText', false, text);
+          }}"
         ></div>
       </div>
     </div>

@@ -13,6 +13,24 @@ import {
   LONG_DOC_LINES,
 } from './clippy-lines.js';
 
+const STORAGE_KEY = 'clippy-doc';
+
+export function saveDraft(text) {
+  try {
+    localStorage.setItem(STORAGE_KEY, text);
+  } catch (_) {
+    /* storage unavailable */
+  }
+}
+
+export function loadDraft() {
+  try {
+    return localStorage.getItem(STORAGE_KEY) || '';
+  } catch {
+    return '';
+  }
+}
+
 const TYPING_DEBOUNCE = 900;
 const CLASSIFY_AT = 50;
 const APPEAR_AT = 3;
@@ -53,6 +71,7 @@ function classify(host, text, fullText, brain) {
 
 export function onInput(host, e, brain) {
   const text = e.currentTarget.innerText || '';
+  saveDraft(text);
   const len = text.trim().length;
   const delta = len - prevLength;
 
