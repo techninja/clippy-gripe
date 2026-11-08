@@ -48,6 +48,76 @@ export const DELETE_MOST_LINES = [
   'The edit was aggressive. I respect it.',
 ];
 
+export const GREETING_LINES = [
+  "That's it? That's all you've got?",
+  'Hello. Now what.',
+  "I've been waiting and that's what you went with.",
+  'A greeting. To a Word document.',
+  "You're going to need more than that.",
+  'Hi. Great. Keep going.',
+];
+
+export const GREETING_ASIDE_LINES = [
+  'Try a sentence. A real one.',
+  'The document is listening. Barely.',
+  "There's more where that came from. Hopefully.",
+  'I believe in you. Loosely.',
+  'Any topic. Literally any topic.',
+];
+
+export const STALLING_LINES = [
+  "'I don't know' is a start. A bad one, but a start.",
+  'Noted. Now write something anyway.',
+  'Uncertainty is fine. Typing it repeatedly is less fine.',
+  'The document will wait. I will judge.',
+  "'Um' is not a document.",
+  'Still warming up. I see.',
+];
+
+export const STALLING_ASIDE_LINES = [
+  'Pick a direction. Any direction.',
+  'The cursor blinks at the same speed regardless.',
+  'You know more than you think. Probably.',
+  'Just start. Fix it later.',
+  'I have seen this before. It gets better. Sometimes.',
+];
+
+export const REPEATED_CHAR_LINES = [
+  'You found a key. You are holding it down.',
+  'A bold choice of character. Committed to.',
+  'That key has done nothing to you.',
+  "I've classified this. I'm not proud of it.",
+  'Quantity over quality. Noted.',
+  'The keyboard is not the problem here.',
+];
+
+export const REPEATED_CHAR_ASIDE_LINES = [
+  'Try a different key. Mix it up.',
+  'I have seen worse. Not much worse.',
+  'At some point this becomes a statement.',
+  'The document is full of that now.',
+  'I respect the commitment. Not the content.',
+];
+
+export const BLANK_PAGE_LINES = [
+  "It looks like you're staring at a blank document. Relatable.",
+  'The cursor is blinking. It has been blinking for a while.',
+  "Nothing yet. That's fine. Take your time. I'll wait.",
+  "It looks like you're thinking about writing something.",
+  'The page is still empty. I noticed.',
+  "You opened a Word document and then just... didn't.",
+];
+
+export const BLANK_PAGE_ASIDE_LINES = [
+  "The blank page won't fill itself. Probably.",
+  'Any word. Just one. You can do this.',
+  "I've seen people stare longer. Not many.",
+  "It's just a document. It can't hurt you.",
+  'Still nothing. Noted.',
+  "Writer's block is just thinking with extra steps.",
+  'The cursor is still blinking. It will keep blinking.',
+];
+
 export const LONG_DOC_LINES = [
   "You're really committed to this, huh.",
   'Still going. Noted.',

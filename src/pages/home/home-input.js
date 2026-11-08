@@ -4,13 +4,8 @@
  */
 
 import { classifyText } from '#utils/classify.js';
-import {
-  getAgent,
-  initClippy,
-  clippySpeak,
-  clippyAside,
-  cancelPending,
-} from '#utils/clippy-agent.js';
+import { getAgent, initClippy } from '#utils/clippy-agent.js';
+import { clippySpeak, clippyAside, cancelPending } from '#utils/clippy-speak.js';
 import {
   EARLY_LINES,
   PASTE_LINES,
@@ -18,50 +13,53 @@ import {
   DELETE_MOST_LINES,
   LONG_DOC_LINES,
 } from './clippy-lines.js';
-
-const STORAGE_KEY = 'clippy-doc';
-
-export function saveDraft(text) {
-  try {
-    localStorage.setItem(STORAGE_KEY, text);
-  } catch (_) {
-    /* storage unavailable */
-  }
-}
-
-export function loadDraft() {
-  try {
-    return localStorage.getItem(STORAGE_KEY) || '';
-  } catch {
-    return '';
-  }
-}
+import { startIdleWatch, cancelIdleWatch, wakeIfSleeping } from './home-idle.js';
+import { tryShortPattern, pickFresh } from './home-patterns.js';
+import { saveDraft } from './home-draft.js';
 
 const TYPING_DEBOUNCE = 900;
 const CLASSIFY_AT = 50;
 const APPEAR_AT = 3;
 const EARLY_AT = 15;
 const REFIRE_DELTA = 80;
+const ASIDE_REFIRE_DELTA = 30;
+
+const CHATTY_CATEGORIES = new Set([
+  'insulting_clippy',
+  'talking_to_clippy',
+  'testing_clippy',
+  'trying_to_break_clippy',
+  'keyboard_mashing',
+  'existential_crisis',
+]);
 
 let debounceTimer = null;
 let lastCategory = null;
 let lastCategoryAt = 0;
+let lastAsideAt = 0;
 let prevLength = 0;
 let lastText = '';
 
-const pick = (lines) => lines[Math.floor(Math.random() * lines.length)];
+const pick = (arr) => arr[Math.floor(Math.random() * arr.length)];
 
 function showCategory(host, categoryId) {
   const a = getAgent();
   const cat = host.categories.find((c) => c.id === categoryId);
   if (!cat || !a) return;
   const textLen = host.querySelector?.('.paper')?.innerText?.length ?? 0;
-  if (categoryId === lastCategory && Math.abs(textLen - lastCategoryAt) < REFIRE_DELTA) return;
-  lastCategory = categoryId;
-  lastCategoryAt = textLen;
-  clippySpeak(cat.clippy_line);
-  a.play(cat.animation);
-  clippyAside(cat.suggestions[Math.floor(Math.random() * cat.suggestions.length)], 4500);
+  const refireDelta = CHATTY_CATEGORIES.has(categoryId) ? ASIDE_REFIRE_DELTA : REFIRE_DELTA;
+  const sameCategory = categoryId === lastCategory;
+  const tooSoon = Math.abs(textLen - lastCategoryAt) < refireDelta;
+  if (!sameCategory || !tooSoon) {
+    lastCategory = categoryId;
+    lastCategoryAt = textLen;
+    clippySpeak(pickFresh(cat.clippy_lines || [cat.clippy_line]));
+    a.play(cat.animation);
+  }
+  if (Math.abs(textLen - lastAsideAt) >= ASIDE_REFIRE_DELTA) {
+    lastAsideAt = textLen;
+    clippyAside(pickFresh(cat.suggestions), 4500);
+  }
 }
 
 function classify(host, text, fullText, brain) {
@@ -74,12 +72,16 @@ function classify(host, text, fullText, brain) {
 
 export function onInput(host, e, brain) {
   const text = e.currentTarget.innerText || '';
+  const paper = e.currentTarget;
+  paper.toggleAttribute('data-nonempty', text.trim().length > 0);
   saveDraft(text);
   cancelPending();
   const len = text.trim().length;
   const delta = len - prevLength;
 
   if (len >= APPEAR_AT && !getAgent()) initClippy();
+  wakeIfSleeping();
+  cancelIdleWatch();
 
   if (len === 0 && prevLength > 10) {
     prevLength = 0;
@@ -87,6 +89,7 @@ export function onInput(host, e, brain) {
     lastText = '';
     getAgent()?.play('Wave');
     setTimeout(() => clippySpeak(pick(DELETE_ALL_LINES)), 600);
+    startIdleWatch(host);
     return;
   }
 
@@ -112,6 +115,22 @@ export function onInput(host, e, brain) {
 
   prevLength = len;
   clearTimeout(debounceTimer);
+
+  const shortMatch = len > 0 && len < EARLY_AT ? tryShortPattern(text) : null;
+  if (shortMatch) {
+    const [lines, asideLines, anim] = shortMatch;
+    if (lastCategory !== '__short__') {
+      lastCategory = '__short__';
+      debounceTimer = setTimeout(() => {
+        initClippy().then(() => {
+          clippySpeak(pick(lines));
+          getAgent()?.play(anim);
+          clippyAside(pick(asideLines), 4000);
+        });
+      }, TYPING_DEBOUNCE);
+    }
+    return;
+  }
 
   if (len < EARLY_AT) return;
 

@@ -5,10 +5,13 @@
 
 import { define } from 'hybrids';
 import { loadBrain } from '#utils/classify.js';
-import { getAgent, initClippy, clippySpeak } from '#utils/clippy-agent.js';
+import { getAgent, initClippy } from '#utils/clippy-agent.js';
+import { clippySpeak } from '#utils/clippy-speak.js';
 import { startClock } from '#utils/clock.js';
 import { homeTemplate } from './home-template.js';
-import { onInput, loadDraft } from './home-input.js';
+import { onInput } from './home-input.js';
+import { loadDraft } from './home-draft.js';
+import { startIdleWatch, cancelIdleWatch } from './home-idle.js';
 
 window.__clippyLoading = false;
 
@@ -38,15 +41,33 @@ export default define({
   categories: {
     value: [],
     connect(host) {
+      startIdleWatch(host);
+
+      // Restore draft immediately — before any async so re-renders don't wipe it
+      const draft = loadDraft();
+      if (draft) {
+        const paper = host.querySelector('.paper');
+        if (paper) {
+          paper.innerText = draft;
+          paper.setAttribute('data-nonempty', '');
+        }
+      }
+
       fetch('/data/categories.json')
         .then((r) => r.json())
         .then((d) => {
           host.categories = d;
-          const draft = loadDraft();
-          if (!draft) return;
-          const paper = host.querySelector('.paper');
-          if (paper && draft) paper.innerText = draft;
-          if (draft.trim().length >= 3) {
+          // Re-apply draft after categories re-render
+          if (draft) {
+            const paper = host.querySelector('.paper');
+            if (paper && !paper.getAttribute('data-nonempty')) {
+              paper.innerText = draft;
+              paper.setAttribute('data-nonempty', '');
+            }
+          }
+          if (draft && draft.trim().length >= 3) {
+            cancelIdleWatch();
+            const paper = host.querySelector('.paper');
             initClippy().then(() => {
               setTimeout(() => onInput(host, { currentTarget: paper }, brain), 1500);
             });

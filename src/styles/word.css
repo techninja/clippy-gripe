@@ -105,7 +105,8 @@
   overflow-wrap: break-word;
 }
 
-.paper:empty::before {
+.paper:empty::before,
+.paper:not([data-nonempty])::before {
   content: attr(data-placeholder);
   color: #aaa;
   pointer-events: none;

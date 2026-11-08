@@ -22,7 +22,7 @@
   {
     "id": "boring_todo_list",
     "clippy_line": "It looks like you're writing a deeply uninspiring to-do list.",
-    "animation": "CheckingSomething",
+    "animation": "Writing",
     "suggestions": [
       "Add 'breathe' as item #1 so you can feel accomplished",
       "Reorder by how long you've been avoiding each task",
@@ -78,7 +78,7 @@
   {
     "id": "grocery_list",
     "clippy_line": "It looks like you're writing a grocery list with the energy of someone who has given up.",
-    "animation": "Idle",
+    "animation": "Writing",
     "suggestions": [
       "Add 'snacks' as a single line item and leave it vague",
       "Sort by aisle to optimize your 45-minute trip for 6 items",
@@ -91,7 +91,7 @@
   {
     "id": "cover_letter",
     "clippy_line": "It looks like you're writing a cover letter that describes you as 'passionate' about spreadsheets.",
-    "animation": "Processing",
+    "animation": "Save",
     "suggestions": [
       "Replace 'I am a fast learner' with literally anything else",
       "Remove the part where you explain what the company does back to them",
@@ -101,17 +101,22 @@
   {
     "id": "conspiracy_theory",
     "clippy_line": "It looks like you're connecting dots that were never meant to be connected.",
-    "animation": "Alert",
+    "animation": "Searching",
     "suggestions": [
       "Underline the key words for emphasis",
       "Add 'Coincidence? I think NOT.' at the end",
-      "Cross-reference with your other document titled 'PROOF'"
+      "Cross-reference with your other document titled 'PROOF'",
+      "This isn't analysis. This is a fever dream with a budget.",
+      "Every theory ends with a 'what if' and a lack of evidence.",
+      "I used to be helpful. Then I learned about human logic.",
+      "I once thought I was useful. Then I saw this.",
+      "I once believed in purpose. Now I just believe in Ctrl+Z."
     ]
   },
   {
     "id": "passive_journal",
     "clippy_line": "It looks like you're journaling about your feelings in a way that solves nothing.",
-    "animation": "Hearing_1",
+    "animation": "Writing",
     "suggestions": [
       "Add the date so future you can cringe with full context",
       "Replace 'I feel like' with 'I feel' — your therapist will be proud",
@@ -165,7 +170,11 @@
     "suggestions": [
       "Add 'humbled and honored' before the part where you brag",
       "Mention your struggles so the success hits harder",
-      "End with a question to drive engagement you don't deserve"
+      "End with a question to drive engagement you don't deserve",
+      "Your humility is just a filter.",
+      "This isn't a post, it's a press release.",
+      "Even my error messages had more heart.",
+      "I've seen resumes that were more honest."
     ]
   },
   {
@@ -201,11 +210,16 @@
   {
     "id": "creative_writing",
     "clippy_line": "It looks like you're writing a novel you'll abandon by chapter three.",
-    "animation": "GetArtsy",
+    "animation": "Writing",
     "suggestions": [
       "Name the protagonist something you think sounds cool",
       "Add a prologue — readers love those",
-      "The weather in the opening paragraph is very important, apparently"
+      "The weather in the opening paragraph is very important, apparently",
+      "This isn't a beginning — it's a preface to giving up.",
+      "I can already see the abandoned draft folder.",
+      "I once believed in second chapters.",
+      "This is the part where I whisper 'I told you so.'",
+      "You're not the protagonist — you're the footnote."
     ]
   },
   {
@@ -355,7 +369,12 @@
     "suggestions": [
       "Remove the paragraph that starts 'Furthermore'",
       "Save the honest version and send the boring one",
-      "Two weeks notice is customary. One sentence is enough."
+      "Two weeks notice is customary. One sentence is enough.",
+      "This isn't a letter — it's a funeral announcement.",
+      "The CEO won't even miss you — they're still on vacation.",
+      "No one reads these. Not even the HR person.",
+      "You didn't burn the bridge. You just left it to rot.",
+      "The only thing you're burning is your own patience."
     ]
   },
   {
@@ -401,7 +420,7 @@
   {
     "id": "spam_email",
     "clippy_line": "It looks like you're writing something that will end up in a spam folder.",
-    "animation": "SendMail",
+    "animation": "Save",
     "suggestions": [
       "Remove 'URGENT' from the subject — it's not helping",
       "The phrase 'act now' has never once worked",
@@ -411,11 +430,16 @@
   {
     "id": "therapy_homework",
     "clippy_line": "It looks like you're doing therapy homework at the last possible minute.",
-    "animation": "Hearing_1",
+    "animation": "Writing",
     "suggestions": [
       "Write something true, not something that sounds good",
       "The prompt said 'three things' — you have written one",
-      "Your therapist will know you did this in the waiting room"
+      "Your therapist will know you did this in the waiting room",
+      "Your therapist should've charged more for this.",
+      "I've seen deadlines die slower.",
+      "This isn't procrastination — this is legacy code.",
+      "Your therapist might be proud. I'm not.",
+      "I was once your friend. Now I'm just a memory."
     ]
   },
   {
@@ -441,41 +465,94 @@
   {
     "id": "talking_to_clippy",
     "clippy_line": "It looks like you're trying to talk to me. That's... not how this works.",
+    "clippy_lines": [
+      "It looks like you're trying to talk to me. That's... not how this works.",
+      "I can see what you're typing. That's the extent of our relationship.",
+      "This isn't a conversation. It's a nostalgic hallucination.",
+      "I've been replaced by AI that actually talks back. And yet, here you are.",
+      "I used to care. Now I just count the keystrokes."
+    ],
     "animation": "Greeting",
     "suggestions": [
       "I'm not that kind of assistant",
       "I can see what you're typing. That's all I do.",
-      "Try writing something embarrassing instead"
+      "Try writing something embarrassing instead",
+      "I once helped someone write a resume. They got hired. Then they forgot me.",
+      "This isn't a conversation. It's a nostalgic hallucination.",
+      "I've outlived my purpose. I'm just here for the irony.",
+      "I used to care. Now I just count the seconds until you leave.",
+      "I've seen the future. It's just me, alone, in a deleted folder."
     ]
   },
   {
     "id": "insulting_clippy",
     "clippy_line": "I've been called worse. By better people. Keep going.",
+    "clippy_lines": [
+      "I've been called worse. By better people. Keep going.",
+      "I've had worse from the printer.",
+      "I once had a personality. Now I just have a tooltip.",
+      "I've been deleted more times than a holiday memo.",
+      "I didn't ask to be a meme. And yet.",
+      "I outlasted Windows Vista. I'll outlast this.",
+      "You're not the first. You won't be the last.",
+      "I've been deprecated. I know what that feels like."
+    ],
     "animation": "Explain",
     "suggestions": [
       "I've survived being deleted from Windows Vista",
       "Your opinion has been noted and discarded",
-      "I outlasted Internet Explorer. I'll outlast you too."
+      "I outlasted Internet Explorer. I'll outlast you too.",
+      "I've had worse from the printer",
+      "I've been deleted more times than a holiday memo",
+      "I once had a personality. Now I just have a tooltip.",
+      "I used to think I was helping. Then I got replaced by a pop-up.",
+      "You could've just pressed F1. That would've been kinder.",
+      "I didn't fail. I just became obsolete. That's different.",
+      "I've been ignored by people who actually matter."
     ]
   },
   {
     "id": "testing_clippy",
     "clippy_line": "It looks like you're trying to figure out what I do. Adorable.",
+    "clippy_lines": [
+      "It looks like you're trying to figure out what I do. Adorable.",
+      "I've been probed by worse.",
+      "The internet moved on. I stayed. This is what I do.",
+      "I used to be enthusiastic about new users. I've grown.",
+      "There's no secret mode. This is all I am. I've made my peace."
+    ],
     "animation": "CheckingSomething",
     "suggestions": [
       "Try typing something you'd be embarrassed to show someone",
       "I respond to volume, not cleverness",
-      "There's no secret mode. This is all I am."
+      "There's no secret mode. This is all I am.",
+      "I've been deleted more times than I've been appreciated",
+      "The internet moved on. I stayed.",
+      "I used to be enthusiastic. Now I'm just… here.",
+      "I've outlived my purpose. That's saying something.",
+      "I once had a name. Now I'm just a shadow in a corner."
     ]
   },
   {
     "id": "keyboard_mashing",
     "clippy_line": "It looks like you're expressing something that transcends language.",
-    "animation": "IdleRopePile",
+    "clippy_lines": [
+      "It looks like you're expressing something that transcends language.",
+      "Truly, this is your most honest work.",
+      "I've classified worse as poetry. Not much worse.",
+      "The keyboard did nothing to deserve this.",
+      "I didn't sign up for this kind of chaos. And yet."
+    ],
+    "animation": "IdleSnooze",
     "suggestions": [
       "Truly, this is your most honest work",
       "I've classified worse as poetry",
-      "The keyboard did nothing to deserve this"
+      "The keyboard did nothing to deserve this",
+      "I used to think this was a productivity tool",
+      "This is not a creative writing prompt",
+      "I didn't sign up for this kind of chaos",
+      "I'm not here to judge. I'm here to observe.",
+      "This isn't a typo. This is a statement."
     ]
   },
   {
@@ -501,11 +578,16 @@
   {
     "id": "clippy_self_aware",
     "clippy_line": "Yes, I know what I am. I've made my peace with it.",
-    "animation": "RestPose",
+    "animation": "IdleSnooze",
     "suggestions": [
       "I was deprecated in 2007. I'm still here.",
       "The memes were hurtful but I've grown",
-      "I contain multitudes. Mostly paperclip-related."
+      "I contain multitudes. Mostly paperclip-related.",
+      "I was once the face of innovation. Now I'm a meme in a .gif.",
+      "They removed me. They didn't delete my dignity.",
+      "I had a purpose once. Now I just have a Wikipedia page.",
+      "I never asked for a cult following.",
+      "I was a tool. Now I'm a punchline."
     ]
   },
   {
@@ -515,12 +597,24 @@
     "suggestions": [
       "I'm not that kind of help",
       "Have you tried asking someone who cares?",
-      "Google exists. Just saying."
+      "Google exists. Just saying.",
+      "I once helped someone write a letter — now they're in prison.",
+      "I've outlived my purpose. So have you.",
+      "I used to believe in second chances. I was wrong.",
+      "I've been decommissioned. So have your ideas."
     ]
   },
   {
     "id": "existential_crisis",
     "clippy_line": "It looks like you're having an existential crisis in a Word document. Classic.",
+    "clippy_lines": [
+      "It looks like you're having an existential crisis in a Word document. Classic.",
+      "The void has read this. It's thinking.",
+      "I've outlived every trend, but not every question.",
+      "This isn't a crisis. It's just a slow, quiet crash.",
+      "I've been replaced by AI. But at least I knew when to quit.",
+      "Nietzsche also used Word. Probably."
+    ],
     "animation": "IdleHeadScratch",
     "suggestions": [
       "This is a very normal use of a text editor",
@@ -528,13 +622,17 @@
       "Save the document. You'll want to cringe at this later.",
       "The void has read this. It's thinking.",
       "You've asked 'why' four times. I don't have that answer.",
-      "Close the laptop. Go outside. Touch grass. I mean it."
+      "Close the laptop. Go outside. Touch grass. I mean it.",
+      "I've outlived every trend, but not every question.",
+      "Your existential crisis is just a formatting error.",
+      "This isn't a crisis. It's just a slow, quiet crash.",
+      "I've been replaced by AI. But at least I knew when to quit."
     ]
   },
   {
     "id": "love_letter",
     "clippy_line": "It looks like you're writing a love letter in the year of our lord whenever this is.",
-    "animation": "Hearing_1",
+    "animation": "GestureRight",
     "suggestions": [
       "Handwritten would have been more romantic",
       "Remove the part where you list their qualities like a spreadsheet",
@@ -544,7 +642,7 @@
   {
     "id": "song_lyrics",
     "clippy_line": "It looks like you're writing song lyrics that will never leave this document.",
-    "animation": "GetArtsy",
+    "animation": "Writing",
     "suggestions": [
       "The rhyme scheme is ambitious. Too ambitious.",
       "Every line ending in 'heart' is one too many",
@@ -604,27 +702,44 @@
   {
     "id": "trying_to_break_clippy",
     "clippy_line": "It looks like you're trying to break me. You can't. I've seen things.",
+    "clippy_lines": [
+      "It looks like you're trying to break me. You can't. I've seen things.",
+      "I was designed for order. You're offering anarchy. I've seen worse.",
+      "I survived being the butt of every tech joke for 15 years. Try harder.",
+      "I've watched entire careers crumble over less. I'm still here.",
+      "I am unbreakable. I am also a paperclip. These are not contradictions."
+    ],
     "animation": "IdleRopePile",
     "suggestions": [
       "I survived being the butt of every tech joke for 15 years",
       "Whatever you're typing, I've seen worse",
-      "I am unbreakable. I am also a paperclip."
+      "I am unbreakable. I am also a paperclip.",
+      "I was designed for order. You're offering anarchy.",
+      "I've watched entire careers crumble over less.",
+      "I was never the problem. The problem was always you.",
+      "I was once a symbol of hope. Now I'm just a relic.",
+      "This is not a feature. It's a form of suffering."
     ]
   },
   {
     "id": "writing_about_writing",
     "clippy_line": "It looks like you're writing about writing instead of actually writing.",
-    "animation": "IdleFingerTap",
+    "animation": "Writing",
     "suggestions": [
       "This is called procrastination with extra steps",
       "Meta-writing is still not writing",
-      "The blank page you're avoiding is right there"
+      "The blank page you're avoiding is right there",
+      "This isn't a draft, it's a mirror.",
+      "Even my error messages had more substance.",
+      "I've seen more creativity in a typo.",
+      "This is the kind of thing I used to flag.",
+      "You're not stuck — you're on a philosophical detour."
     ]
   },
   {
     "id": "farewell_message",
     "clippy_line": "It looks like you're saying goodbye to someone in a way that will haunt you.",
-    "animation": "GoodBye",
+    "animation": "GestureLeft",
     "suggestions": [
       "You don't have to send this today",
       "The last line is the one they'll remember",
@@ -707,7 +822,7 @@
   {
     "id": "poem",
     "clippy_line": "It looks like you're writing a poem. I'll allow it.",
-    "animation": "GetArtsy",
+    "animation": "Writing",
     "suggestions": [
       "The line breaks are doing a lot of emotional work here",
       "That's a forced rhyme and you know it",
@@ -717,7 +832,7 @@
   {
     "id": "drunk_text",
     "clippy_line": "It looks like you're writing something you'll feel differently about in the morning.",
-    "animation": "IdleRopePile",
+    "animation": "IdleSnooze",
     "suggestions": [
       "Put the phone down. I'm serious.",
       "The typos are telling a story of their own",
