@@ -840,6 +840,25 @@
     ]
   },
   {
+    "id": "short_exploratory",
+    "clippy_line": "It looks like you're figuring out what to write. Take your time. I'll be here.",
+    "clippy_lines": [
+      "It looks like you're figuring out what to write. Take your time. I'll be here.",
+      "A tentative start. I've seen worse.",
+      "Something is forming. Possibly.",
+      "You're not sure yet. That's fine. Neither am I.",
+      "The document is waiting. Patiently. Unlike me."
+    ],
+    "animation": "Thinking",
+    "suggestions": [
+      "Any direction works. Pick one.",
+      "The first sentence is the hardest. This isn't it yet.",
+      "Try finishing that thought.",
+      "I've seen this before. It gets somewhere eventually.",
+      "You could just start typing and see what happens."
+    ]
+  },
+  {
     "id": "shopping_wishlist",
     "clippy_line": "It looks like you're writing a wishlist for things you absolutely do not need.",
     "animation": "IdleFingerTap",

@@ -5,7 +5,7 @@
 
 import { getAgent, initClippy } from '#utils/clippy-agent.js';
 import { clippySpeak, clippyAside } from '#utils/clippy-speak.js';
-import { BLANK_PAGE_LINES, BLANK_PAGE_ASIDE_LINES } from './clippy-lines.js';
+import { BLANK_PAGE_LINES, BLANK_PAGE_ASIDE_LINES, HAS_TEXT_IDLE_LINES, HAS_TEXT_IDLE_ASIDE_LINES } from './clippy-lines.js';
 
 let idleTimer = null;
 let sleeping = false;
@@ -29,9 +29,12 @@ export function startIdleWatch(host) {
       // Stage 2 — goad after another 5s
       idleTimer = setTimeout(() => {
         if (paperLen(host) >= 15) return;
-        clippySpeak(pick(BLANK_PAGE_LINES));
-        clippyAside(pick(BLANK_PAGE_ASIDE_LINES), 5000);
-        // Stage 3 — fall asleep, then restart goad cycle after a while
+        const hasText = paperLen(host) > 0;
+        const lines = hasText ? HAS_TEXT_IDLE_LINES : BLANK_PAGE_LINES;
+        const asideLines = hasText ? HAS_TEXT_IDLE_ASIDE_LINES : BLANK_PAGE_ASIDE_LINES;
+        clippySpeak(pick(lines));
+        clippyAside(pick(asideLines), 5000);
+        // Stage 3 — fall asleep, then restart goad cycle
         idleTimer = setTimeout(() => {
           if (paperLen(host) >= 15) return;
           sleeping = true;
@@ -39,8 +42,10 @@ export function startIdleWatch(host) {
           idleTimer = setTimeout(() => {
             if (paperLen(host) >= 15 || !sleeping) return;
             sleeping = false;
-            clippySpeak(pick(BLANK_PAGE_LINES));
-            clippyAside(pick(BLANK_PAGE_ASIDE_LINES), 5000);
+            const l2 = paperLen(host) > 0 ? HAS_TEXT_IDLE_LINES : BLANK_PAGE_LINES;
+            const a2 = paperLen(host) > 0 ? HAS_TEXT_IDLE_ASIDE_LINES : BLANK_PAGE_ASIDE_LINES;
+            clippySpeak(pick(l2));
+            clippyAside(pick(a2), 5000);
             idleTimer = setTimeout(() => {
               if (paperLen(host) >= 15) return;
               sleeping = true;

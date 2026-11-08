@@ -118,6 +118,23 @@ export const BLANK_PAGE_ASIDE_LINES = [
   'The cursor is still blinking. It will keep blinking.',
 ];
 
+export const HAS_TEXT_IDLE_LINES = [
+  'You stopped. Interesting.',
+  'Still there?',
+  'The document is waiting.',
+  'You paused. I noticed.',
+  'Going somewhere with this?',
+  "I'm still here. In case you forgot.",
+];
+
+export const HAS_TEXT_IDLE_ASIDE_LINES = [
+  'The next sentence is the hard one.',
+  'You could just keep going.',
+  'I\'ve seen people abandon documents at this exact length.',
+  'Whatever comes next, commit to it.',
+  'Still watching. No pressure.',
+];
+
 export const LONG_DOC_LINES = [
   "You're really committed to this, huh.",
   'Still going. Noted.',

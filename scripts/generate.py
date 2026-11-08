@@ -83,6 +83,7 @@ TASK_DESCRIPTIONS = {
     "writing_about_writing": "writing meta-commentary about the act of writing itself, writer's block, not knowing what to write, staring at a blank page",
     "farewell_message": "writing a goodbye message, farewell note, or final message to someone or something",
     "rant": "writing an extended emotional rant or tirade, venting frustration, anger, or despair in a stream-of-consciousness way",
+    "short_exploratory": "typing short exploratory fragments while figuring out what to write — things like 'hello world', 'just testing', 'not sure what to write', 'this is a test', 'hi there', 'let me try this', 'okay so', 'I guess I\'ll start with', 'testing 123', 'what should I write', 'I don\'t know where to begin', 'just seeing what happens'",
     "code_writing": "writing actual code — functions, variables, loops, classes — in languages like Python, JavaScript, HTML, SQL, or pseudocode, as if using a text editor as an IDE",
     "recipe": "writing a cooking recipe — ingredients list, quantities, preparation steps, cooking times, serving suggestions",
     "poem": "writing a poem — with line breaks, stanzas, rhymes or free verse, metaphor, imagery, and poetic structure",
