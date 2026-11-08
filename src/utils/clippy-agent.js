@@ -66,6 +66,37 @@ export async function initClippy() {
     }
   }, 3000);
 
+  // Add touch drag support — clippyjs only handles mouse events
+  a._el.addEventListener(
+    'touchstart',
+    (e) => {
+      e.preventDefault();
+      a.pause();
+      a._balloon.hide(true);
+      const t = e.touches[0];
+      const o = a._el.getBoundingClientRect();
+      const offset = {
+        left: t.clientX - o.left,
+        top: t.clientY - o.top,
+      };
+      const onMove = (ev) => {
+        ev.preventDefault();
+        const touch = ev.touches[0];
+        a._el.style.left = touch.clientX - offset.left + 'px';
+        a._el.style.top = touch.clientY - offset.top + 'px';
+      };
+      const onEnd = () => {
+        window.removeEventListener('touchmove', onMove);
+        window.removeEventListener('touchend', onEnd);
+        a.reposition();
+        a.resume();
+      };
+      window.addEventListener('touchmove', onMove, { passive: false });
+      window.addEventListener('touchend', onEnd);
+    },
+    { passive: false },
+  );
+
   // Shift balloon left after full-size reposition
   const _origPosition = a._balloon._position.bind(a._balloon);
   a._balloon._position = function (side) {
