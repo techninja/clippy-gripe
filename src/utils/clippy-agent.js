@@ -31,7 +31,6 @@ export async function initClippy() {
   a.show();
   a.play('GetAttention');
   a._balloon.WORD_SPEAK_TIME = 60;
-  a._balloon.CLOSE_BALLOON_DELAY = 4000;
 
   // Widen balloon and fix sizing — skip word-by-word typing so the balloon
   // measures at full size before positioning, eliminating the grow-from-left bug.
@@ -49,22 +48,24 @@ export async function initClippy() {
     this._hold = hold;
     this._complete = complete;
     this.reposition();
+    const words = text.trim().split(/\s+/).length;
+    const readMs = Math.max(3500, words * 400);
     balloonTimer = window.setTimeout(() => {
       this._active = false;
       this._hidden = true;
       this._balloon.style.display = 'none';
       if (!hold) complete();
-    }, this.CLOSE_BALLOON_DELAY);
+    }, readMs);
   };
 
-  // Safety valve — force-hide if balloon lingers beyond 12s
+  // Safety valve — force-hide if balloon lingers beyond 15s
   setInterval(() => {
     if (a._balloon._balloon.style.display !== 'none' && !a._balloon._active) {
       window.clearTimeout(balloonTimer);
       a._balloon._hidden = true;
       a._balloon._balloon.style.display = 'none';
     }
-  }, 3000);
+  }, 5000);
 
   // Add touch drag support — clippyjs only handles mouse events
   a._el.addEventListener(
