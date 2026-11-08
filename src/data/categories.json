@@ -36,7 +36,10 @@
     "suggestions": [
       "Remove the paragraph explaining yourself — it won't help",
       "Add 'no hard feelings' to make it worse",
-      "Just send a voice memo like a coward"
+      "Just send a voice memo like a coward",
+      "'It's not you, it's me' is in here somewhere. I can feel it.",
+      "The first draft was more honest. Go back to that one.",
+      "You've used the word 'journey' unironically"
     ]
   },
   {
@@ -46,7 +49,10 @@
     "suggestions": [
       "Move 'per my last email' to the subject line",
       "Replace all periods with ellipses for maximum menace",
-      "Schedule delivery for 11:58pm on a Friday"
+      "Schedule delivery for 11:58pm on a Friday",
+      "'As previously discussed' is a declaration of war",
+      "The word 'kindly' is not kind here",
+      "Remove yourself from CC before you send this"
     ]
   },
   {
@@ -76,7 +82,10 @@
     "suggestions": [
       "Add 'snacks' as a single line item and leave it vague",
       "Sort by aisle to optimize your 45-minute trip for 6 items",
-      "Add wine. You already know you need wine."
+      "Add wine. You already know you need wine.",
+      "You've written 'misc' three times. That's not a category.",
+      "This list has no vegetables. I'm noting that.",
+      "You forgot the one thing you actually came for"
     ]
   },
   {
@@ -516,7 +525,10 @@
     "suggestions": [
       "This is a very normal use of a text editor",
       "Nietzsche also used Word. Probably.",
-      "Save the document. You'll want to cringe at this later."
+      "Save the document. You'll want to cringe at this later.",
+      "The void has read this. It's thinking.",
+      "You've asked 'why' four times. I don't have that answer.",
+      "Close the laptop. Go outside. Touch grass. I mean it."
     ]
   },
   {
@@ -666,7 +678,60 @@
     "suggestions": [
       "This is cheaper than therapy, I'll give you that",
       "The caps lock key is doing a lot of emotional labor here",
-      "Don't send this. Print it. Burn it. Classic."
+      "Don't send this. Print it. Burn it. Classic.",
+      "You've used the word 'literally' eight times",
+      "The sentence length is increasing. That's not a good sign.",
+      "I'm not going to tell you to calm down. But."
+    ]
+  },
+  {
+    "id": "code_writing",
+    "clippy_line": "It looks like you're writing code. In a Word document. Bold architectural choice.",
+    "animation": "GetTechy",
+    "suggestions": [
+      "This would work better in literally any other application",
+      "The indentation is already wrong and you've written 4 lines",
+      "I can see a bug from here. You'll find it at 2am."
+    ]
+  },
+  {
+    "id": "recipe",
+    "clippy_line": "It looks like you're writing a recipe with the confidence of someone who has never followed one.",
+    "animation": "CheckingSomething",
+    "suggestions": [
+      "'A handful' is not a unit of measurement",
+      "You've listed the ingredients but not the quantities. Classic.",
+      "Step 3 assumes knowledge that step 3 should provide"
+    ]
+  },
+  {
+    "id": "poem",
+    "clippy_line": "It looks like you're writing a poem. I'll allow it.",
+    "animation": "GetArtsy",
+    "suggestions": [
+      "The line breaks are doing a lot of emotional work here",
+      "That's a forced rhyme and you know it",
+      "Free verse is not an excuse to avoid structure. Just saying."
+    ]
+  },
+  {
+    "id": "drunk_text",
+    "clippy_line": "It looks like you're writing something you'll feel differently about in the morning.",
+    "animation": "IdleRopePile",
+    "suggestions": [
+      "Put the phone down. I'm serious.",
+      "The typos are telling a story of their own",
+      "Future you is already cringing. Listen to future you."
+    ]
+  },
+  {
+    "id": "shopping_wishlist",
+    "clippy_line": "It looks like you're writing a wishlist for things you absolutely do not need.",
+    "animation": "IdleFingerTap",
+    "suggestions": [
+      "Three of these are the same thing in different colors",
+      "You've added a price next to each item. That's not helping.",
+      "This is a list of problems disguised as solutions"
     ]
   }
 ]

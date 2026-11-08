@@ -45,7 +45,7 @@ export default define({
           const draft = loadDraft();
           if (!draft) return;
           const paper = host.querySelector('.paper');
-          if (paper) paper.innerText = draft;
+          if (paper && draft) paper.innerText = draft;
           if (draft.trim().length >= 3) {
             initClippy().then(() => {
               setTimeout(() => onInput(host, { currentTarget: paper }, brain), 1500);

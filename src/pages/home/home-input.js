@@ -113,19 +113,7 @@ export function onInput(host, e, brain) {
   prevLength = len;
   clearTimeout(debounceTimer);
 
-  if (len >= EARLY_AT && len < CLASSIFY_AT && lastCategory === null) {
-    debounceTimer = setTimeout(() => {
-      if (lastCategory === null) {
-        clippySpeak(pick(EARLY_LINES));
-        getAgent()?.play('Thinking');
-        lastCategory = '__early__';
-        lastText = text;
-      }
-    }, TYPING_DEBOUNCE);
-    return;
-  }
-
-  if (len < CLASSIFY_AT || !host.categories.length) return;
+  if (len < EARLY_AT) return;
 
   if (len >= 500 && len - lastText.length >= 200) {
     clippySpeak(pick(LONG_DOC_LINES));
@@ -133,6 +121,15 @@ export function onInput(host, e, brain) {
   }
 
   debounceTimer = setTimeout(() => {
+    if (!host.categories.length) {
+      if (lastCategory === null) {
+        clippySpeak(pick(EARLY_LINES));
+        getAgent()?.play('Thinking');
+        lastCategory = '__early__';
+        lastText = text;
+      }
+      return;
+    }
     const newText = text.slice(lastText.length).trim();
     classify(host, newText.length >= CLASSIFY_AT ? newText : text, text, brain);
   }, TYPING_DEBOUNCE);

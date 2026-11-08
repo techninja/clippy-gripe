@@ -18,7 +18,7 @@ OLLAMA_URL = "http://localhost:11434/api/generate"
 MODEL = "qwen3:14b"
 EXAMPLES_PER_CATEGORY = 80
 OUT_FILE = "training_data.jsonl"
-CATEGORIES_FILE = "categories.json"
+CATEGORIES_FILE = "../src/data/categories.json"
 
 PROMPT_TEMPLATE = """Generate {n} different examples of text that someone might actually type if they were {task}.
 
@@ -83,6 +83,11 @@ TASK_DESCRIPTIONS = {
     "writing_about_writing": "writing meta-commentary about the act of writing itself, writer's block, not knowing what to write, staring at a blank page",
     "farewell_message": "writing a goodbye message, farewell note, or final message to someone or something",
     "rant": "writing an extended emotional rant or tirade, venting frustration, anger, or despair in a stream-of-consciousness way",
+    "code_writing": "writing actual code — functions, variables, loops, classes — in languages like Python, JavaScript, HTML, SQL, or pseudocode, as if using a text editor as an IDE",
+    "recipe": "writing a cooking recipe — ingredients list, quantities, preparation steps, cooking times, serving suggestions",
+    "poem": "writing a poem — with line breaks, stanzas, rhymes or free verse, metaphor, imagery, and poetic structure",
+    "drunk_text": "typing a message while clearly intoxicated — typos, rambling, emotional oversharing, incomplete thoughts, repeated words, confessions they'll regret",
+    "shopping_wishlist": "writing a personal wishlist or want list of items to buy for themselves — gadgets, clothes, home goods, luxury items, things they want but don't need",
 }
 
 
