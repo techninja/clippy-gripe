@@ -97,27 +97,43 @@ export async function initClippy() {
     { passive: false },
   );
 
-  // Shift balloon left after full-size reposition
+  // Shift balloon left after full-size reposition, then clamp to viewport
   const _origPosition = a._balloon._position.bind(a._balloon);
   a._balloon._position = function (side) {
     _origPosition(side);
-    this._balloon.style.left = parseFloat(this._balloon.style.left) - 30 + 'px';
+    const b = this._balloon;
+    const margin = 8;
+    let left = parseFloat(b.style.left) - 30;
+    let top = parseFloat(b.style.top);
+    const bW = b.offsetWidth;
+    const bH = b.offsetHeight;
+    left = Math.max(margin, Math.min(left, window.innerWidth - bW - margin));
+    top = Math.max(margin, Math.min(top, window.innerHeight - bH - margin));
+    b.style.left = left + 'px';
+    b.style.top = top + 'px';
   };
 }
 
 let asideTimer = null;
 
-/** Cancel any pending aside or balloon — call before every new reaction. */
+/** Cancel pending timers and animation — does NOT hide an active balloon. */
 export function cancelPending() {
   window.clearTimeout(asideTimer);
   asideTimer = null;
   const a = getAgent();
   if (!a) return;
   window.clearTimeout(a._balloon._loop);
+  a.stop();
+}
+
+/** Cancel everything including any visible balloon — call only when speaking. */
+function cancelAll() {
+  cancelPending();
+  const a = getAgent();
+  if (!a) return;
   a._balloon._active = false;
   a._balloon._hidden = true;
   a._balloon._balloon.style.display = 'none';
-  a.stop();
 }
 
 /**
@@ -126,7 +142,7 @@ export function cancelPending() {
 export function clippySpeak(text, aside = false) {
   const a = getAgent();
   if (!a) return;
-  if (!aside) cancelPending();
+  if (!aside) cancelAll();
   a.speak(text, false);
 }
 
