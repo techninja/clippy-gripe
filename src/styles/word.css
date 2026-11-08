@@ -103,6 +103,7 @@
   cursor: text;
   white-space: pre-wrap;
   overflow-wrap: break-word;
+  position: relative;
 }
 
 .paper:empty::before,
@@ -110,6 +111,9 @@
   content: attr(data-placeholder);
   color: #aaa;
   pointer-events: none;
+  position: absolute;
+  top: 32px;
+  left: 48px;
 }
 
 @media (width <= 600px) {

@@ -6,13 +6,7 @@
 import { classifyText } from '#utils/classify.js';
 import { getAgent, initClippy } from '#utils/clippy-agent.js';
 import { clippySpeak, clippyAside, cancelPending } from '#utils/clippy-speak.js';
-import {
-  EARLY_LINES,
-  PASTE_LINES,
-  DELETE_ALL_LINES,
-  DELETE_MOST_LINES,
-  LONG_DOC_LINES,
-} from './clippy-lines.js';
+import { EARLY_LINES, PASTE_LINES, DELETE_ALL_LINES, DELETE_MOST_LINES, LONG_DOC_LINES } from './clippy-lines.js';
 import { startIdleWatch, cancelIdleWatch, wakeIfSleeping } from './home-idle.js';
 import { tryShortPattern, pickFresh } from './home-patterns.js';
 import { saveDraft } from './home-draft.js';
@@ -24,14 +18,7 @@ const EARLY_AT = 15;
 const REFIRE_DELTA = 80;
 const ASIDE_REFIRE_DELTA = 30;
 
-const CHATTY_CATEGORIES = new Set([
-  'insulting_clippy',
-  'talking_to_clippy',
-  'testing_clippy',
-  'trying_to_break_clippy',
-  'keyboard_mashing',
-  'existential_crisis',
-]);
+const CHATTY = new Set(['insulting_clippy','talking_to_clippy','testing_clippy','trying_to_break_clippy','keyboard_mashing','existential_crisis']);
 
 let debounceTimer = null;
 let lastCategory = null;
@@ -47,7 +34,7 @@ function showCategory(host, categoryId) {
   const cat = host.categories.find((c) => c.id === categoryId);
   if (!cat || !a) return;
   const textLen = host.querySelector?.('.paper')?.innerText?.length ?? 0;
-  const refireDelta = CHATTY_CATEGORIES.has(categoryId) ? ASIDE_REFIRE_DELTA : REFIRE_DELTA;
+  const refireDelta = CHATTY.has(categoryId) ? ASIDE_REFIRE_DELTA : REFIRE_DELTA;
   const sameCategory = categoryId === lastCategory;
   const tooSoon = Math.abs(textLen - lastCategoryAt) < refireDelta;
   if (!sameCategory || !tooSoon) {
@@ -83,12 +70,16 @@ export function onInput(host, e, brain) {
   wakeIfSleeping();
   cancelIdleWatch();
 
-  if (len === 0 && prevLength > 10) {
+  if (len === 0 && prevLength > 0) {
     prevLength = 0;
     lastCategory = null;
+    lastCategoryAt = 0;
+    lastAsideAt = 0;
     lastText = '';
-    getAgent()?.play('Wave');
-    setTimeout(() => clippySpeak(pick(DELETE_ALL_LINES)), 600);
+    if (getAgent()) {
+      getAgent()?.play('Wave');
+      setTimeout(() => clippySpeak(pick(DELETE_ALL_LINES)), 600);
+    }
     startIdleWatch(host);
     return;
   }
@@ -119,20 +110,23 @@ export function onInput(host, e, brain) {
   const shortMatch = len > 0 && len < EARLY_AT ? tryShortPattern(text) : null;
   if (shortMatch) {
     const [lines, asideLines, anim] = shortMatch;
-    if (lastCategory !== '__short__') {
-      lastCategory = '__short__';
-      debounceTimer = setTimeout(() => {
-        initClippy().then(() => {
-          clippySpeak(pick(lines));
-          getAgent()?.play(anim);
-          clippyAside(pick(asideLines), 4000);
-        });
-      }, TYPING_DEBOUNCE);
-    }
+    debounceTimer = setTimeout(() => {
+      initClippy().then(() => {
+        if (lastCategory === '__short__') return;
+        lastCategory = '__short__';
+        clippySpeak(pick(lines));
+        getAgent()?.play(anim);
+        clippyAside(pick(asideLines), 4000);
+      });
+    }, TYPING_DEBOUNCE);
     return;
   }
 
-  if (len < EARLY_AT) return;
+  // Short text that doesn't match a pattern — start idle watch so Clippy doesn't just stare
+  if (len > 0 && len < EARLY_AT) {
+    startIdleWatch(host);
+    return;
+  }
 
   if (len >= 500 && len - lastText.length >= 200) {
     clippySpeak(pick(LONG_DOC_LINES));

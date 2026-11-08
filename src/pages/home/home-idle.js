@@ -31,11 +31,22 @@ export function startIdleWatch(host) {
         if (paperLen(host) >= 15) return;
         clippySpeak(pick(BLANK_PAGE_LINES));
         clippyAside(pick(BLANK_PAGE_ASIDE_LINES), 5000);
-        // Stage 3 — fall asleep after the aside has had time to show
+        // Stage 3 — fall asleep, then restart goad cycle after a while
         idleTimer = setTimeout(() => {
           if (paperLen(host) >= 15) return;
           sleeping = true;
           getAgent()?.play('IdleSnooze');
+          idleTimer = setTimeout(() => {
+            if (paperLen(host) >= 15 || !sleeping) return;
+            sleeping = false;
+            clippySpeak(pick(BLANK_PAGE_LINES));
+            clippyAside(pick(BLANK_PAGE_ASIDE_LINES), 5000);
+            idleTimer = setTimeout(() => {
+              if (paperLen(host) >= 15) return;
+              sleeping = true;
+              getAgent()?.play('IdleSnooze');
+            }, 11000);
+          }, 20000);
         }, 11000);
       }, 5000);
     });
