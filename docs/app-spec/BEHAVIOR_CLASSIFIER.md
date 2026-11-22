@@ -7,6 +7,7 @@ reads three floats (`boredom`, `tiredness`, `irritation`) and returns a behavior
 This is the behavior classifier — it's just hardcoded thresholds rather than a trained model.
 
 What's working:
+
 - Idle → Thinking → goad → sleep cascade driven by `tiredness`/`boredom` accumulation
 - Storm triggered by `irritation` from escalating input categories
 - Goad cooldown (10 anims), post-goad drain, forced idle cycle to prevent think re-entry

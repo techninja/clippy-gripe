@@ -124,17 +124,18 @@ export function sessionAge() {
 /** Normalized feature vector for behavior classifier. Order must match training. */
 export function getFeatures() {
   return {
-    boredom:     session.boredom,
-    tiredness:   session.tiredness,
-    irritation:  session.irritation,
+    boredom: session.boredom,
+    tiredness: session.tiredness,
+    irritation: session.irritation,
     velocityWpm: Math.min(1, session.velocityWpm / 120),
-    deleteRatio: session.totalChars > 0 ? Math.min(1, session.totalDeletes / session.totalChars) : 0,
-    burstCount:  Math.min(1, session.burstCount / 5),
-    idleSecs:    Math.min(1, idleSeconds() / 300),
-    sessionAge:  Math.min(1, sessionAge() / 1800),
-    goatCount:   Math.min(1, session.goatCount / 10),
-    wakeCount:   Math.min(1, session.wakeCount / 5),
-    stormCount:  Math.min(1, session.stormCount / 3),
-    textLength:  Math.min(1, session.textLength / 2000),
+    deleteRatio:
+      session.totalChars > 0 ? Math.min(1, session.totalDeletes / session.totalChars) : 0,
+    burstCount: Math.min(1, session.burstCount / 5),
+    idleSecs: Math.min(1, idleSeconds() / 300),
+    sessionAge: Math.min(1, sessionAge() / 1800),
+    goatCount: Math.min(1, session.goatCount / 10),
+    wakeCount: Math.min(1, session.wakeCount / 5),
+    stormCount: Math.min(1, session.stormCount / 3),
+    textLength: Math.min(1, session.textLength / 2000),
   };
 }

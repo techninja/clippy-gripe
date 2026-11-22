@@ -69,6 +69,9 @@ export function decide(idleAnimCount, lastGoatAnim) {
     `_decide: boredom=${boredom.toFixed(3)} tired=${tiredness.toFixed(3)} irritation=${irritation.toFixed(3)} idle#=${idleAnimCount} cooled=${goatCooled} → ${label}`,
   );
 
+  // Hard guards — classifier handles nuance, extremes are deterministic
+  if (tiredness >= TIRED_SLEEP) return { type: 'sleep' };
+  if (irritation >= IRRITATION_STORM) return { type: 'storm' };
   if (label === 'sleep') return { type: 'sleep' };
   if (label === 'storm') return { type: 'storm' };
   if (label === 'goad' && goatCooled) {

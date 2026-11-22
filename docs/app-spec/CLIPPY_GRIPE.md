@@ -1,4 +1,4 @@
-# clippy-gripe App Spec
+# Clippy Gripe App Spec
 
 A single-page static site that renders a retro Word 97 document editor and judges whatever you type using an in-browser text classifier, delivered by an animated Clippy.
 

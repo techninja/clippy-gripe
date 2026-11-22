@@ -58,7 +58,9 @@ export async function initClippy() {
   _introReady = new Promise((resolve) => {
     _resolveIntroReady = resolve;
   });
-  onShowComplete(() => send({ type: 'play', anim: 'GetAttention', noInterrupt: true }));
+  onShowComplete(() =>
+    send({ type: 'play', anim: 'GetAttention', noInterrupt: true, noPersonality: true }),
+  );
   onIntroComplete(() => {
     log('introReady resolved');
     _resolveIntroReady();
@@ -77,7 +79,7 @@ export async function initClippy() {
 
   a._el.style.display = 'block';
   setAgentHidden(false);
-  send({ type: 'play', anim: 'Show', noInterrupt: true });
+  send({ type: 'play', anim: 'Show', noInterrupt: true, noPersonality: true });
   startLoop();
 }
 
