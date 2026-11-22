@@ -5,6 +5,7 @@
 
 import { define } from 'hybrids';
 import { loadBrain } from '#utils/classify.js';
+import { loadBehaviorBrain } from '#utils/behavior-classify.js';
 import { initClippy, introReady, setDragEndHandler } from '#utils/clippy-agent.js';
 import { clippySpeak } from '#utils/clippy-speak.js';
 import { startClock } from '#utils/clock.js';
@@ -90,6 +91,7 @@ export default define({
           brain = b;
         })
         .catch(() => {});
+      loadBehaviorBrain().catch(() => {});
       return startClock('taskbar-clock');
     },
   },

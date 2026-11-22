@@ -5,7 +5,8 @@
  * @module utils/clippy-decide
  */
 
-import { session } from '#pages/home/home-session.js';
+import { session, getFeatures } from '#pages/home/home-session.js';
+import { classifyBehavior } from './behavior-classify.js';
 import {
   BLANK_PAGE_LINES,
   BLANK_PAGE_ASIDE_LINES,
@@ -61,28 +62,20 @@ export function decide(idleAnimCount, lastGoatAnim) {
   const hasText = textLength > 0;
   const goatCooled = idleAnimCount - lastGoatAnim >= GOAD_COOLDOWN_ANIMS;
 
+  const features = getFeatures();
+  const label = classifyBehavior(features);
+
   logP(
-    `_decide: boredom=${boredom.toFixed(3)} tired=${tiredness.toFixed(3)} irritation=${irritation.toFixed(3)} idle#=${idleAnimCount} cooled=${goatCooled}`,
+    `_decide: boredom=${boredom.toFixed(3)} tired=${tiredness.toFixed(3)} irritation=${irritation.toFixed(3)} idle#=${idleAnimCount} cooled=${goatCooled} → ${label}`,
   );
 
-  if (tiredness >= TIRED_SLEEP) {
-    logP(`→ sleep (tired ${tiredness.toFixed(3)} >= ${TIRED_SLEEP})`);
-    return { type: 'sleep' };
-  }
-  if (irritation >= IRRITATION_STORM) {
-    logP(`→ storm (irritation ${irritation.toFixed(3)} >= ${IRRITATION_STORM})`);
-    return { type: 'storm' };
-  }
-  if (tiredness >= TIRED_GOAD && goatCooled) {
-    logP(`→ goad (tired ${tiredness.toFixed(3)} >= ${TIRED_GOAD})`);
+  if (label === 'sleep') return { type: 'sleep' };
+  if (label === 'storm') return { type: 'storm' };
+  if (label === 'goad' && goatCooled) {
     const lines = hasText ? HAS_TEXT_IDLE_LINES : BLANK_PAGE_LINES;
     const aside = hasText ? HAS_TEXT_IDLE_ASIDE_LINES : BLANK_PAGE_ASIDE_LINES;
     return { type: 'goad', text: pick(lines), aside: pick(aside) };
   }
-  if (tiredness >= TIRED_THINK || boredom >= BORED_THINK) {
-    logP(`→ think (tired ${tiredness.toFixed(3)} bored ${boredom.toFixed(3)})`);
-    return { type: 'hold', anim: 'Thinking' };
-  }
-  logP(`→ idle`);
+  if (label === 'think') return { type: 'hold', anim: 'Thinking' };
   return { type: 'idle' };
 }
