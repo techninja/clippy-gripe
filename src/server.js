@@ -30,7 +30,13 @@ watch('src', { recursive: true }, () => {
 const HOT_RELOAD_SNIPPET =
   '<script>(function(){const es=new EventSource("/_reload");es.addEventListener("reload",()=>location.reload());es.onerror=()=>{es.close();setTimeout(()=>location.reload(),500)};})();<\/script>';
 
-app.use(express.static('src'));
+app.use(
+  express.static('src', {
+    setHeaders: (res, path) => {
+      if (path.endsWith('.js') || path.endsWith('.mjs')) res.setHeader('Cache-Control', 'no-store');
+    },
+  }),
+);
 
 app.use((req, res, next) => {
   if (req.method === 'GET' && !req.path.includes('.')) {

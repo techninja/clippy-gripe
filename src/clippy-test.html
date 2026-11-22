@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Clippy Controller Test</title>
+  <script type="importmap">
+    {
+      "imports": {
+        "clippyjs": "/vendor/clippyjs/index.mjs",
+        "clippyjs/agents/clippy": "/vendor/clippyjs/agents/clippy/index.mjs",
+        "#utils/": "/utils/",
+        "#pages/": "/pages/",
+        "#store/": "/store/"
+      }
+    }
+  </script>
+  <style>
+    body { font-family: monospace; background: #1a1a1a; color: #ccc; padding: 20px; }
+    h2 { color: #fff; }
+    #log { white-space: pre; font-size: 12px; line-height: 1.6; }
+    .pass { color: #4f4; }
+    .fail { color: #f44; }
+    .info { color: #88f; }
+    .step { color: #ff8; }
+    button { margin: 4px; padding: 8px 14px; font-family: monospace; cursor: pointer; background: #333; color: #fff; border: 1px solid #555; }
+    button:hover { background: #444; }
+    #clippy-anchor { position: fixed; bottom: 20px; right: 20px; }
+  </style>
+</head>
+<body>
+  <h2>Clippy Controller Test</h2>
+  <div>
+    <button onclick="runScript('intro')">▶ Intro sequence</button>
+    <button onclick="runScript('idles')">▶ Idle loop (10 anims)</button>
+    <button onclick="runScript('interrupt')">▶ Interrupt idle with play</button>
+    <button onclick="runScript('hold')">▶ Hold → auto-exit</button>
+    <button onclick="runScript('sleep')">▶ Sleep → wake</button>
+    <button onclick="runScript('personality')">▶ Personality accumulation</button>
+    <button onclick="runScript('all')">▶ Run all</button>
+    <button onclick="clearLog()">✕ Clear</button>
+  </div>
+  <pre id="log"></pre>
+  <div id="clippy-anchor"></div>
+
+  <script type="module">
+    // ── Minimal stubs so controller/agent load without the full app ──────────
+    window.__clippyDebugAnim        = true;
+    window.__clippyDebugPersonality = true;
+    window.__clippyLoading          = false;
+    window.__clippySleeping         = false;
+
+    // Stub speak so balloon calls don't throw
+    window.__clippySpeakStub = (text) => log('info', `  speak: "${text}"`);
+
+    const t0 = Date.now();
+    const ts = () => `+${Date.now() - t0}ms`;
+
+    function log(cls, msg) {
+      const el = document.getElementById('log');
+      el.innerHTML += `<span class="${cls}">[${ts()}] ${msg}\n</span>`;
+      el.scrollTop = el.scrollHeight;
+    }
+    window._testLog = log;
+
+    function clearLog() { document.getElementById('log').innerHTML = ''; }
+    window.clearLog = clearLog;
+
+    // ── Load agent + controller ───────────────────────────────────────────────
+    const { initClippy, getAgent, introReady } = await import('/utils/clippy-agent.js');
+    const { send, startLoop, isSleeping, isHolding, resetCounters, wake } = await import('/utils/clippy-controller.js');
+    const { session } = await import('/pages/home/home-session.js');
+
+    log('info', 'Modules loaded. Click a test to begin.');
+
+    // ── Test scripts ──────────────────────────────────────────────────────────
+
+    const SCRIPTS = {
+
+      async intro() {
+        log('step', '── Intro sequence ──');
+        log('info', 'Calling initClippy() — expect 5s hidden delay, then Show + GetAttention');
+        await initClippy();
+        log('info', 'initClippy() returned (Show sent, loop started)');
+        await introReady();
+        log('pass', '✓ introReady resolved — GetAttention finished');
+        assert(getAgent() !== null, 'agent exists');
+        assert(!isSleeping(), 'not sleeping after intro');
+      },
+
+      async idles() {
+        log('step', '── Idle loop (watch 10 idle anims play) ──');
+        await ensureReady();
+        const before = session.tiredness;
+        log('info', `tiredness before: ${before.toFixed(3)}`);
+        // Just wait 30s and observe — loop drives itself
+        log('info', 'Waiting 30s for idle loop to run...');
+        await wait(30000);
+        log('info', `tiredness after: ${session.tiredness.toFixed(3)} boredom: ${session.boredom.toFixed(3)}`);
+        assert(session.tiredness > before, 'tiredness increased during idle');
+        log('pass', '✓ Personality state accumulated');
+      },
+
+      async interrupt() {
+        log('step', '── Interrupt idle with play command ──');
+        await ensureReady();
+        log('info', 'Sending play:Surprised — should interrupt current idle');
+        const p = send({ type: 'play', anim: 'Alert' });
+        await p;
+        log('pass', '✓ play:Surprised completed');
+        log('info', 'Loop should resume idle automatically...');
+        await wait(2000);
+        log('pass', '✓ Loop continued after reaction');
+      },
+
+      async hold() {
+        log('step', '── Hold → auto-exit via _decide() kick ──');
+        await ensureReady();
+        // Force tiredness high enough that after 2 kick ticks (2s) it crosses TIRED_SLEEP
+        session.tiredness = 0.78;
+        session.boredom   = 0.00;
+        resetCounters();
+        log('info', 'tiredness=0.78, sending hold:Thinking — kick should escalate to sleep in ~2s');
+        send({ type: 'hold', anim: 'Thinking' });
+        log('info', 'Waiting up to 8s for hold to self-exit...');
+        const exited = await Promise.race([
+          waitForNotHolding(),
+          wait(8000).then(() => 'timeout'),
+        ]);
+        if (exited === 'timeout') log('fail', '✗ Hold did not self-exit within 8s');
+        else log('pass', '✓ Hold self-exited via _decide() kick');
+        // Wake if sleep was triggered, then reset — poll until actually awake
+        wake();
+        await new Promise(r => { const iv = setInterval(() => { if (!isSleeping()) { clearInterval(iv); r(); } }, 100); });
+        await wait(200);
+        session.tiredness = 0; session.boredom = 0;
+        resetCounters();
+      },
+
+      async sleep() {
+        log('step', '── Sleep → wake ──');
+        await ensureReady();
+        log('info', 'Sending sleep command...');
+        send({ type: 'sleep' });
+        await wait(1500);
+        assert(isSleeping(), 'Clippy is sleeping');
+        log('pass', '✓ isSleeping() = true');
+        log('info', 'Waking with play:GetAttention...');
+        send({ type: 'play', anim: 'GetAttention' });
+        await wait(500);
+        assert(!isSleeping(), 'Clippy woke up');
+        log('pass', '✓ isSleeping() = false after wake');
+      },
+
+      async personality() {
+        log('step', '── Personality accumulation ──');
+        await ensureReady();
+        wake();
+        // Wait until sleep actually exits (poll, not fixed delay)
+        await new Promise(r => { const iv = setInterval(() => { if (!isSleeping()) { clearInterval(iv); r(); } }, 100); });
+        await wait(200);  // one more tick for loop to advance past sleep case
+        session.tiredness = 0; session.boredom = 0; session.irritation = 0;
+        session.goatCount = 0;
+        resetCounters();
+        log('info', 'Reset state. Watching for: think → goad → sleep');
+        log('info', 'Expected: think ~20s, goad ~25s, sleep ~45s');
+        const start = Date.now();
+        let thought = false, goaded = false, slept = false;
+        const check = setInterval(() => {
+          const t = ((Date.now() - start) / 1000).toFixed(1);
+          if (!thought && isHolding()) {
+            thought = true;
+            log('pass', `✓ Thinking hold at t=${t}s (tired=${session.tiredness.toFixed(3)})`);
+          }
+          if (!goaded && session.goatCount > 0) {
+            goaded = true;
+            log('pass', `✓ First goad at t=${t}s (tired=${session.tiredness.toFixed(3)})`);
+          }
+          if (!slept && isSleeping()) {
+            slept = true;
+            log('pass', `✓ Sleep at t=${t}s (tired=${session.tiredness.toFixed(3)})`);
+            clearInterval(check);
+          }
+        }, 200);
+        await wait(90000);
+        clearInterval(check);
+        if (!thought) log('fail', '✗ No Thinking hold in 90s');
+        if (!goaded) log('fail', '✗ No goad in 90s');
+        if (!slept)  log('fail', '✗ No sleep in 90s');
+      },
+
+      async all() {
+        for (const name of ['intro', 'interrupt', 'hold', 'personality']) {
+          await SCRIPTS[name]();
+          await wait(1000);
+        }
+        log('pass', '══ All tests complete ══');
+      },
+    };
+
+    // ── Helpers ───────────────────────────────────────────────────────────────
+
+    let _ready = false;
+    async function ensureReady() {
+      if (_ready) return;
+      if (!getAgent()) {
+        log('info', 'Agent not loaded — running intro first...');
+        await SCRIPTS.intro();
+      }
+      _ready = true;
+    }
+
+    function assert(cond, msg) {
+      if (cond) log('pass', `✓ ${msg}`);
+      else      log('fail', `✗ FAIL: ${msg}`);
+    }
+
+    function wait(ms) { return new Promise(r => setTimeout(r, ms)); }
+
+    function waitForNotHolding() {
+      return new Promise(resolve => {
+        // First wait for hold to start, then wait for it to end
+        const iv = setInterval(() => {
+          if (isHolding()) {
+            clearInterval(iv);
+            const iv2 = setInterval(() => {
+              if (!isHolding()) { clearInterval(iv2); resolve(); }
+            }, 100);
+          }
+        }, 50);
+      });
+    }
+
+    window.runScript = async (name) => {
+      try { await SCRIPTS[name](); }
+      catch(e) { log('fail', `✗ Error: ${e.message}`); console.error(e); }
+    };
+  </script>
+</body>
+</html>

@@ -12,3 +12,4 @@ const ROOT = dirname(dirname(fileURLToPath(import.meta.url)));
 
 await import(resolve(ROOT, 'scripts/vendor-deps.js'));
 await import(resolve(ROOT, 'scripts/build-icons.js'));
+await import(resolve(ROOT, 'scripts/apply-patches.js'));

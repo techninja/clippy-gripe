@@ -1,5 +1,6 @@
 /**
- * Clippy reactive line pools — one-liners for lifecycle events.
+ * Clippy reactive line pools — input-triggered one-liners.
+ * Loop lifecycle lines (idle, sleep, storm, intro) live in clippy-lines-loop.js.
  * @module pages/home/clippy-lines
  */
 
@@ -99,42 +100,6 @@ export const REPEATED_CHAR_ASIDE_LINES = [
   'I respect the commitment. Not the content.',
 ];
 
-export const BLANK_PAGE_LINES = [
-  "It looks like you're staring at a blank document. Relatable.",
-  'The cursor is blinking. It has been blinking for a while.',
-  "Nothing yet. That's fine. Take your time. I'll wait.",
-  "It looks like you're thinking about writing something.",
-  'The page is still empty. I noticed.',
-  "You opened a Word document and then just... didn't.",
-];
-
-export const BLANK_PAGE_ASIDE_LINES = [
-  "The blank page won't fill itself. Probably.",
-  'Any word. Just one. You can do this.',
-  "I've seen people stare longer. Not many.",
-  "It's just a document. It can't hurt you.",
-  'Still nothing. Noted.',
-  "Writer's block is just thinking with extra steps.",
-  'The cursor is still blinking. It will keep blinking.',
-];
-
-export const HAS_TEXT_IDLE_LINES = [
-  'You stopped. Interesting.',
-  'Still there?',
-  'The document is waiting.',
-  'You paused. I noticed.',
-  'Going somewhere with this?',
-  "I'm still here. In case you forgot.",
-];
-
-export const HAS_TEXT_IDLE_ASIDE_LINES = [
-  'The next sentence is the hard one.',
-  'You could just keep going.',
-  'I\'ve seen people abandon documents at this exact length.',
-  'Whatever comes next, commit to it.',
-  'Still watching. No pressure.',
-];
-
 export const LONG_DOC_LINES = [
   "You're really committed to this, huh.",
   'Still going. Noted.',
@@ -144,4 +109,21 @@ export const LONG_DOC_LINES = [
   'You have a lot to say. Apparently.',
   'Still here. Still watching.',
   "I've read worse. Not many, but some.",
+];
+
+export const WAKE_LINES = [
+  'Oh. You came back.',
+  'Back already.',
+  'I was having such a nice sleep.',
+  'Ah. Still here after all.',
+  'You returned. I had given up.',
+  'The document missed you. I did not.',
+];
+
+export const WAKE_ASIDE_LINES = [
+  'Where were we.',
+  'Pick up where you left off. Or start over. Your call.',
+  'The cursor is still blinking. It never stopped.',
+  'I kept your place.',
+  'Right. So. What were you saying.',
 ];

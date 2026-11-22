@@ -1,63 +1,36 @@
 /**
- * Input handling, classification, and Clippy reaction logic.
+ * Input handling and Clippy reaction triggers.
+ * Classification logic lives in home-classify.js.
  * @module pages/home/home-input
  */
 
-import { classifyText } from '#utils/classify.js';
-import { getAgent, initClippy } from '#utils/clippy-agent.js';
+import { initClippy } from '#utils/clippy-agent.js';
 import { clippySpeak, clippyAside, cancelPending } from '#utils/clippy-speak.js';
-import { EARLY_LINES, PASTE_LINES, DELETE_ALL_LINES, DELETE_MOST_LINES, LONG_DOC_LINES } from './clippy-lines.js';
-import { startIdleWatch, cancelIdleWatch, wakeIfSleeping } from './home-idle.js';
-import { tryShortPattern, pickFresh } from './home-patterns.js';
+import { recordInput } from './home-session.js';
+import {
+  EARLY_LINES,
+  PASTE_LINES,
+  DELETE_ALL_LINES,
+  DELETE_MOST_LINES,
+  LONG_DOC_LINES,
+} from './clippy-lines.js';
+import { wakeIfSleeping } from './home-idle.js';
+import { send } from '#utils/clippy-controller.js';
+import { tryShortPattern } from './home-patterns.js';
 import { saveDraft } from './home-draft.js';
+import { classify, resetClassifyState, getLastText, setLastText } from './home-classify.js';
 
-const TYPING_DEBOUNCE = 900;
-const CLASSIFY_AT = 50;
+const TYPING_DEBOUNCE = 500;
+const CLASSIFY_AT = 20;
 const APPEAR_AT = 3;
 const EARLY_AT = 15;
-const REFIRE_DELTA = 80;
-const ASIDE_REFIRE_DELTA = 30;
-
-const CHATTY = new Set(['insulting_clippy','talking_to_clippy','testing_clippy','trying_to_break_clippy','keyboard_mashing','existential_crisis']);
 
 let debounceTimer = null;
-let lastCategory = null;
-let lastCategoryAt = 0;
-let lastAsideAt = 0;
 let prevLength = 0;
-let lastText = '';
 
 const pick = (arr) => arr[Math.floor(Math.random() * arr.length)];
 
-function showCategory(host, categoryId) {
-  const a = getAgent();
-  const cat = host.categories.find((c) => c.id === categoryId);
-  if (!cat || !a) return;
-  const textLen = host.querySelector?.('.paper')?.innerText?.length ?? 0;
-  const refireDelta = CHATTY.has(categoryId) ? ASIDE_REFIRE_DELTA : REFIRE_DELTA;
-  const sameCategory = categoryId === lastCategory;
-  const tooSoon = Math.abs(textLen - lastCategoryAt) < refireDelta;
-  if (!sameCategory || !tooSoon) {
-    lastCategory = categoryId;
-    lastCategoryAt = textLen;
-    clippySpeak(pickFresh(cat.clippy_lines || [cat.clippy_line]));
-    a.play(cat.animation);
-  }
-  if (Math.abs(textLen - lastAsideAt) >= ASIDE_REFIRE_DELTA) {
-    lastAsideAt = textLen;
-    clippyAside(pickFresh(cat.suggestions), 4500);
-  }
-}
-
-function classify(host, text, fullText, brain) {
-  const id = brain?.classes.length
-    ? classifyText(text, brain)
-    : host.categories[Math.floor(Math.random() * host.categories.length)].id;
-  lastText = fullText;
-  showCategory(host, id);
-}
-
-export function onInput(host, e, brain) {
+export function onInput(host, e, brain, opts = {}) {
   const text = e.currentTarget.innerText || '';
   const paper = e.currentTarget;
   paper.toggleAttribute('data-nonempty', text.trim().length > 0);
@@ -65,42 +38,38 @@ export function onInput(host, e, brain) {
   cancelPending();
   const len = text.trim().length;
   const delta = len - prevLength;
+  recordInput(delta, len);
+  const isEnter = e.inputType === 'insertParagraph' || e.key === 'Enter';
 
-  if (len >= APPEAR_AT && !getAgent()) initClippy();
+  if (len >= APPEAR_AT) initClippy();
   wakeIfSleeping();
-  cancelIdleWatch();
 
   if (len === 0 && prevLength > 0) {
     prevLength = 0;
-    lastCategory = null;
-    lastCategoryAt = 0;
-    lastAsideAt = 0;
-    lastText = '';
-    if (getAgent()) {
-      getAgent()?.play('Wave');
-      setTimeout(() => clippySpeak(pick(DELETE_ALL_LINES)), 600);
-    }
-    startIdleWatch(host);
+    resetClassifyState();
+    send({ type: 'play', anim: 'Wave', text: pick(DELETE_ALL_LINES) });
     return;
   }
 
   if (delta >= 100) {
     prevLength = len;
-    lastText = text;
+    setLastText(text);
     clearTimeout(debounceTimer);
-    clippySpeak(pick(PASTE_LINES));
-    getAgent()?.play('GetAttention');
-    if (len >= CLASSIFY_AT && host.categories.length)
-      debounceTimer = setTimeout(() => classify(host, text, text, brain), TYPING_DEBOUNCE);
+    initClippy().then(() => {
+      clippySpeak(pick(PASTE_LINES));
+      send({ type: 'play', anim: 'GetAttention' });
+      if (len >= CLASSIFY_AT && host.categories.length)
+        debounceTimer = setTimeout(() => classify(host, text, text, brain), TYPING_DEBOUNCE);
+    });
     return;
   }
 
   if (delta <= -80 && prevLength >= 100) {
     prevLength = len;
-    lastCategory = null;
-    lastText = text;
+    resetClassifyState();
+    setLastText(text);
     clippySpeak(pick(DELETE_MOST_LINES));
-    getAgent()?.play('Sad');
+    send({ type: 'play', anim: 'Alert' });
     return;
   }
 
@@ -112,38 +81,42 @@ export function onInput(host, e, brain) {
     const [lines, asideLines, anim] = shortMatch;
     debounceTimer = setTimeout(() => {
       initClippy().then(() => {
-        if (lastCategory === '__short__') return;
-        lastCategory = '__short__';
+        setLastText(text);
         clippySpeak(pick(lines));
-        getAgent()?.play(anim);
+        send({ type: 'play', anim });
         clippyAside(pick(asideLines), 4000);
       });
     }, TYPING_DEBOUNCE);
     return;
   }
 
-  // Short text that doesn't match a pattern — start idle watch so Clippy doesn't just stare
-  if (len > 0 && len < EARLY_AT) {
-    startIdleWatch(host);
-    return;
-  }
+  if (len > 0 && len < EARLY_AT) return;
 
-  if (len >= 500 && len - lastText.length >= 200) {
+  if (len >= 500 && len - getLastText().length >= 200) {
     clippySpeak(pick(LONG_DOC_LINES));
-    getAgent()?.play('Idle1_1');
+    send({ type: 'play', anim: 'Idle1_1' });
   }
 
-  debounceTimer = setTimeout(() => {
-    if (!host.categories.length) {
-      if (lastCategory === null) {
-        clippySpeak(pick(EARLY_LINES));
-        getAgent()?.play('Thinking');
-        lastCategory = '__early__';
-        lastText = text;
+  debounceTimer = setTimeout(
+    () => {
+      if (!host.categories.length) {
+        if (getLastText() === '') {
+          clippySpeak(pick(EARLY_LINES));
+          send({ type: 'play', anim: 'Thinking' });
+          setLastText(text);
+        }
+        return;
       }
-      return;
-    }
-    const newText = text.slice(lastText.length).trim();
-    classify(host, newText.length >= CLASSIFY_AT ? newText : text, text, brain);
-  }, TYPING_DEBOUNCE);
+      const lastLine = text.trimEnd().split('\n').at(-2)?.trim() ?? '';
+      const newText = text.slice(getLastText().length).trim();
+      const classifyWith =
+        isEnter && lastLine.length >= CLASSIFY_AT
+          ? lastLine
+          : newText.length >= CLASSIFY_AT
+            ? newText
+            : text;
+      classify(host, classifyWith, text, brain, opts);
+    },
+    isEnter ? 0 : TYPING_DEBOUNCE,
+  );
 }

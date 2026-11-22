@@ -21,8 +21,8 @@ const REPEATED_RE = /^(.)\1{3,}\s*$/;
 export function tryShortPattern(text) {
   const t = text.trim();
   if (!t) return null;
-  if (REPEATED_RE.test(t)) return [REPEATED_CHAR_LINES, REPEATED_CHAR_ASIDE_LINES, 'IdleSnooze'];
-  if (GREETING_RE.test(t)) return [GREETING_LINES, GREETING_ASIDE_LINES, 'Greeting'];
+  if (REPEATED_RE.test(t)) return [REPEATED_CHAR_LINES, REPEATED_CHAR_ASIDE_LINES, 'Alert'];
+  if (GREETING_RE.test(t)) return [GREETING_LINES, GREETING_ASIDE_LINES, 'Wave'];
   if (STALLING_RE.test(t)) return [STALLING_LINES, STALLING_ASIDE_LINES, 'IdleHeadScratch'];
   return null;
 }

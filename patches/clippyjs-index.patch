@@ -1,0 +1,121 @@
+--- node_modules/clippyjs/dist/index.mjs	2026-11-09 13:40:46.010359375 -0800
++++ src/vendor/clippyjs/index.mjs	2026-11-21 11:22:41.065548372 -0800
+@@ -1,3 +1,7 @@
++const _dbg = (...a) => window.__clippyDebugAnim && console.log('[clippy]', ...a);
++const _t0 = Date.now();
++const _t = () => Date.now() - _t0;
++
+ var Queue = class {
+ 	_queue;
+ 	_onEmptyCallback;
+@@ -96,17 +100,21 @@
+ 		return !!this._data.animations[name];
+ 	}
+ 	exitAnimation() {
++		_dbg(`exitAnimation: ${this.currentAnimationName} t=${_t()}`);
+ 		this._exiting = true;
+ 	}
+ 	showAnimation(animationName, stateChangeCallback) {
+-		console.log(`[clippy] showAnimation: ${animationName}`);
++		_dbg(`showAnimation: ${animationName} t=${_t()}`);
+ 		this._exiting = false;
+ 		if (!this.hasAnimation(animationName)) return false;
++		window.clearTimeout(this._loop);
+ 		this._currentAnimation = this._data.animations[animationName];
+ 		this.currentAnimationName = animationName;
+ 		if (!this._started) {
+ 			this._step();
+ 			this._started = true;
++		} else {
++			this._loop = window.setTimeout(this._step.bind(this), 0);
+ 		}
+ 		this._currentFrameIndex = 0;
+ 		this._currentFrame = void 0;
+@@ -157,8 +165,12 @@
+ 		this._draw();
+ 		this._playSound();
+ 		this._loop = window.setTimeout(this._step.bind(this), this._currentFrame.duration);
+-		if (this._endCallback && frameChanged && this._atLastFrame()) if (this._currentAnimation.useExitBranching && !this._exiting) this._endCallback(this.currentAnimationName, Animator.States.WAITING);
+-		else this._endCallback(this.currentAnimationName, Animator.States.EXITED);
++		if (this._endCallback && frameChanged && this._atLastFrame()) {
++			const state = (this._currentAnimation.useExitBranching && !this._exiting) ? Animator.States.WAITING : Animator.States.EXITED;
++			_dbg(`endCallback: ${this.currentAnimationName} state=${state === 0 ? 'EXITED' : 'WAITING'} t=${_t()}`);
++			if (this._currentAnimation.useExitBranching && !this._exiting) this._endCallback(this.currentAnimationName, Animator.States.WAITING);
++			else this._endCallback(this.currentAnimationName, Animator.States.EXITED);
++		}
+ 	}
+ 	pause() {
+ 		window.clearTimeout(this._loop);
+@@ -518,32 +530,13 @@
+ 		requestAnimationFrame(animate);
+ 	}
+ 	_playInternal(animation, callback) {
+-		if (this._isIdleAnimation() && this._idlePromise) {
+-			this._idlePromise.then(() => {
+-				this._playInternal(animation, callback);
+-			});
+-			return;
+-		}
+ 		this._animator.showAnimation(animation, callback);
+ 	}
+-	play(animation, timeout, cb) {
++	play(animation, cb) {
+ 		if (!this.hasAnimation(animation)) return false;
+-		if (timeout === void 0) timeout = 0;
+-		this._addToQueue(function(complete) {
+-			let completed = false;
+-			let callback = function(name, state) {
+-				if (state === Animator.States.EXITED) {
+-					completed = true;
+-					if (cb) cb();
+-					complete();
+-				}
+-			};
+-			if (timeout) window.setTimeout(() => {
+-				if (completed) return;
+-				this._animator.exitAnimation();
+-			}, timeout);
+-			this._playInternal(animation, callback);
+-		}, this);
++		this._animator.showAnimation(animation, (name, state) => {
++			if (state === 0 && cb) cb();
++		});
+ 		return true;
+ 	}
+ 	show(fast) {
+@@ -615,33 +608,10 @@
+ 		if (-135 <= r && r < -45) return "Down";
+ 		return "Top";
+ 	}
+-	_onQueueEmpty() {
+-		if (this._hidden || this._isIdleAnimation()) return;
+-		let idleAnim = this._getIdleAnimation();
+-		this._idlePromise = new Promise((resolve) => {
+-			this._idleResolve = resolve;
+-		});
+-		this._animator.showAnimation(idleAnim, this._onIdleComplete.bind(this));
+-	}
+-	_onIdleComplete(name, state) {
+-		if (state === Animator.States.EXITED) {
+-			if (this._idleResolve) this._idleResolve();
+-			this._idlePromise = null;
+-			this._idleResolve = null;
+-		}
+-	}
++	_onQueueEmpty() {}
+ 	_isIdleAnimation() {
+ 		let c = this._animator.currentAnimationName;
+-		return c && c.indexOf("Idle") === 0;
+-	}
+-	_getIdleAnimation() {
+-		let animations = this.animations();
+-		let r = [];
+-		for (let i = 0; i < animations.length; i++) {
+-			let a = animations[i];
+-			if (a.indexOf("Idle") === 0) r.push(a);
+-		}
+-		return r[Math.floor(Math.random() * r.length)];
++		return c && c.indexOf('Idle') === 0;
+ 	}
+ 	_setupEvents() {
+ 		this._resizeHandle = this.reposition.bind(this);
